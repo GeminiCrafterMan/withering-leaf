@@ -116,7 +116,8 @@ SpriteHeaders:
 	overworld_sprite GentlemanSpriteGFX, WALKING_SPRITE, PAL_OW_BLUE
 	overworld_sprite GrampsSpriteGFX, WALKING_SPRITE, PAL_OW_BROWN
 	overworld_sprite GrannySpriteGFX, WALKING_SPRITE, PAL_OW_BROWN
-	overworld_sprite HexManiacSpriteGFX, WALKING_SPRITE, PAL_OW_PURPLE
+	overworld_sprite HexManiacMSpriteGFX, WALKING_SPRITE, PAL_OW_PURPLE
+	overworld_sprite HexManiacFSpriteGFX, WALKING_SPRITE, PAL_OW_PURPLE
 	overworld_sprite HikerSpriteGFX, WALKING_SPRITE, PAL_OW_BLUE
 	overworld_sprite JugglerSpriteGFX, WALKING_SPRITE, PAL_OW_BLUE
 	overworld_sprite KimonoGirlSpriteGFX, WALKING_SPRITE, PAL_OW_RED

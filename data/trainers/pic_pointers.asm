@@ -59,7 +59,8 @@ TrainerPicPointers::
 	dba SchoolboyPic
 	dba SchoolgirlPic
 	dba PsychicTPic
-	dba HexManiacPic
+	dba HexManiacMPic
+	dba HexManiacFPic
 	dba SagePic
 	dba MediumPic
 	dba KimonoGirl1Pic

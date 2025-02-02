@@ -573,7 +573,19 @@ DEF CRYS EQU __trainer_class__
 	const URI
 	const VIRGIL
 
-	trainerclass HEX_MANIAC ; 3b
+	trainerclass HEX_MANIAC_M ; 3b
+	const HEXMANIACM_STEVEN
+	const NATSU
+	const BRAM
+	const LUCIAN
+	const NYX
+	const RHYS
+	;const ESTHER
+	;const MATILDA
+	;const BETHANY
+	;const CORYN
+
+	trainerclass HEX_MANIAC_F ; 3b
 	const TAMARA
 	const ASHLEY
 	const AMY

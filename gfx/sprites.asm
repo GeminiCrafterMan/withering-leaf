@@ -326,8 +326,11 @@ GrampsSpriteGFX:: INCBIN "gfx/sprites/gramps.2bpp.lz"
 SECTION "GrannySpriteGFX", ROMX
 GrannySpriteGFX:: INCBIN "gfx/sprites/granny.2bpp.lz"
 
-SECTION "HexManiacSpriteGFX", ROMX
-HexManiacSpriteGFX:: INCBIN "gfx/sprites/hex_maniac.2bpp.lz"
+SECTION "HexManiacMSpriteGFX", ROMX
+HexManiacMSpriteGFX:: INCBIN "gfx/sprites/hex_maniac_m.2bpp.lz"
+
+SECTION "HexManiacFSpriteGFX", ROMX
+HexManiacFSpriteGFX:: INCBIN "gfx/sprites/hex_maniac_f.2bpp.lz"
 
 SECTION "HikerSpriteGFX", ROMX
 HikerSpriteGFX:: INCBIN "gfx/sprites/hiker.2bpp.lz"

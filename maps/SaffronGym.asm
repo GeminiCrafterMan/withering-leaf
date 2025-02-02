@@ -48,8 +48,8 @@ SaffronGym_MapScriptHeader:
 	object_event  2,  3, SPRITE_GRANNY, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerMediumDoris, -1
 	object_event  9,  3, SPRITE_PSYCHIC, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerPsychicLeon, -1
 	object_event 17,  3, SPRITE_PSYCHIC, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerPsychicJared, -1
-	object_event  2,  9, SPRITE_HEX_MANIAC, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerHexManiacLuna, -1
-	object_event 17,  9, SPRITE_HEX_MANIAC, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerHexManiacNatalie, -1
+	object_event  2,  9, SPRITE_HEX_MANIAC_F, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerHexManiacFLuna, -1
+	object_event 17,  9, SPRITE_HEX_MANIAC_F, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerHexManiacFNatalie, -1
 	object_event  2, 15, SPRITE_PSYCHIC, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerPsychicFranklin, -1
 	object_event 17, 15, SPRITE_GRANNY, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerMediumRebecca, -1
 	object_event  9, 14, SPRITE_GYM_GUY, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, SaffronGymGuyScript, -1
@@ -70,8 +70,8 @@ SaffronGymSabrinaScript:
 	setevent EVENT_BEAT_MEDIUM_DORIS
 	setevent EVENT_BEAT_PSYCHIC_LEON
 	setevent EVENT_BEAT_PSYCHIC_JARED
-	setevent EVENT_BEAT_HEX_MANIAC_LUNA
-	setevent EVENT_BEAT_HEX_MANIAC_NATALIE
+	setevent EVENT_BEAT_HEX_MANIAC_F_LUNA
+	setevent EVENT_BEAT_HEX_MANIAC_F_NATALIE
 	setevent EVENT_BEAT_PSYCHIC_FRANKLIN
 	setevent EVENT_BEAT_MEDIUM_REBECCA
 	opentext
@@ -139,8 +139,8 @@ GenericTrainerPsychicJared:
 	cont "Sabrina."
 	done
 
-GenericTrainerHexManiacLuna:
-	generictrainer HEX_MANIAC, LUNA, EVENT_BEAT_HEX_MANIAC_LUNA, HexManiacLunaSeenText, HexManiacLunaBeatenText
+GenericTrainerHexManiacFLuna:
+	generictrainer HEX_MANIAC_F, LUNA, EVENT_BEAT_HEX_MANIAC_F_LUNA, HexManiacFLunaSeenText, HexManiacFLunaBeatenText
 
 	text "Alakazam is a pow-"
 	line "erful #mon,"
@@ -150,8 +150,8 @@ GenericTrainerHexManiacLuna:
 	cont "powerful spells."
 	done
 
-GenericTrainerHexManiacNatalie:
-	generictrainer HEX_MANIAC, NATALIE, EVENT_BEAT_HEX_MANIAC_NATALIE, HexManiacNatalieSeenText, HexManiacNatalieBeatenText
+GenericTrainerHexManiacFNatalie:
+	generictrainer HEX_MANIAC_F, NATALIE, EVENT_BEAT_HEX_MANIAC_F_NATALIE, HexManiacFNatalieSeenText, HexManiacFNatalieBeatenText
 
 	text "Maybe I'm not cut"
 	line "out to be a Hex"
@@ -304,21 +304,21 @@ PsychicJaredBeatenText:
 	text "I was no match…"
 	done
 
-HexManiacLunaSeenText:
+HexManiacFLunaSeenText:
 	text "Abra, Kadabra,"
 	line "Alakazam!"
 	done
 
-HexManiacLunaBeatenText:
+HexManiacFLunaBeatenText:
 	text "My curse failed?"
 	done
 
-HexManiacNatalieSeenText:
+HexManiacFNatalieSeenText:
 	text "Let us do battle!"
 	line "Mwahaha!"
 	done
 
-HexManiacNatalieBeatenText:
+HexManiacFNatalieBeatenText:
 	text "Mwaha--cough!"
 	done
 

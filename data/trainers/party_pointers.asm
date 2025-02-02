@@ -61,7 +61,8 @@ TrainerGroups:
 	dba SchoolboyGroup
 	dba SchoolgirlGroup
 	dba PsychicGroup
-	dba HexManiacGroup
+	dba HexManiacMGroup
+	dba HexManiacFGroup
 	dba SageGroup
 	dba MediumGroup
 	dba KimonoGirl1Group

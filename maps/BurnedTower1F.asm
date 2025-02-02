@@ -24,7 +24,7 @@ BurnedTower1F_MapScriptHeader:
 	smashrock_event 13, 4
 	object_event 12, 14, SPRITE_MORTY, SPRITEMOVEDATA_WANDER, 1, 1, -1, -1, 0, OBJECTTYPE_COMMAND, jumptextfaceplayer, BurnedTower1FMortyText, EVENT_BURNED_TOWER_MORTY
 	itemball_event 13,  1, HP_UP, 1, EVENT_BURNED_TOWER_1F_HP_UP
-	object_event  1,  1, SPRITE_HEX_MANIAC, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 2, GenericTrainerHexManiacTamara, -1
+	object_event  1,  1, SPRITE_HEX_MANIAC_F, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 2, GenericTrainerHexManiacFTamara, -1
 	object_event 11,  3, SPRITE_FIREBREATHER, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 2, GenericTrainerFirebreatherNed, -1
 
 	object_const_def
@@ -119,8 +119,8 @@ BurnedTowerRivalBattleScript:
 	warpcheck
 	end
 
-GenericTrainerHexManiacTamara:
-	generictrainer HEX_MANIAC, TAMARA, EVENT_BEAT_HEX_MANIAC_TAMARA, HexManiacTamaraSeenText, HexManiacTamaraBeatenText
+GenericTrainerHexManiacFTamara:
+	generictrainer HEX_MANIAC_F, TAMARA, EVENT_BEAT_HEX_MANIAC_F_TAMARA, HexManiacFTamaraSeenText, HexManiacFTamaraBeatenText
 
 	text "There are powers"
 	line "beyond our under-"
@@ -266,12 +266,12 @@ BurnedTower1FMortyText:
 	line "Tower with him."
 	done
 
-HexManiacTamaraSeenText:
+HexManiacFTamaraSeenText:
 	text "A strange power is"
 	line "present here…"
 	done
 
-HexManiacTamaraBeatenText:
+HexManiacFTamaraBeatenText:
 	text "I have lost…"
 	done
 

@@ -60,7 +60,8 @@ TrainerEncounterMusic:
 	db MUSIC_YOUNGSTER_ENCOUNTER ; schoolboy
 	db MUSIC_LASS_ENCOUNTER ; schoolgirl
 	db MUSIC_YOUNGSTER_ENCOUNTER ; psychic_t
-	db MUSIC_SAGE_ENCOUNTER ; hex_maniac
+	db MUSIC_SAGE_ENCOUNTER ; hex_maniac_m
+	db MUSIC_SAGE_ENCOUNTER ; hex_maniac_f
 	db MUSIC_SAGE_ENCOUNTER ; sage
 	db MUSIC_SAGE_ENCOUNTER ; medium
 	db MUSIC_KIMONO_ENCOUNTER ; kimono_girl_1

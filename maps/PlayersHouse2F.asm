@@ -213,7 +213,7 @@ endr
 	; post-e4
 	setflag ENGINE_CREDITS_SKIP
 	; good party
-	givepoke MEWTWO, PLAIN_FORM, 100, BRIGHTPOWDER
+	givepoke MEWTWO, MEWTWO_ARMORED_FORM, 100, BRIGHTPOWDER
 	loadmem wPartyMon1EVs+0, 252
 	loadmem wPartyMon1EVs+1, 252
 	loadmem wPartyMon1EVs+2, 252
@@ -251,10 +251,10 @@ endr
 	givepoke URSALUNA, URSALUNA_BLOODMOON_FORM, 50
 	givepoke DUDUNSPARCE, DUDUNSPARCE_THREE_SEGMENT_FORM, 50
 	; evolve during battle
-	givepoke PUPITAR, 54
-	loadmem wPartyMon6Exp+2, LOW(207967)
-	loadmem wPartyMon6Exp+1, HIGH(207967)
-	loadmem wPartyMon6Exp+0, 207967 >> 16
+;	givepoke PUPITAR, 54
+;	loadmem wPartyMon6Exp+2, LOW(207967)
+;	loadmem wPartyMon6Exp+1, HIGH(207967)
+;	loadmem wPartyMon6Exp+0, 207967 >> 16
 	; fill pokedex
 	callasm FillPokedex
 ;	; new bark events

@@ -59,7 +59,8 @@ TrainerClassNames::
 	li "Schoolboy"        ; SCHOOLBOY
 	li "Schoolgirl"       ; SCHOOLGIRL
 	li "Psychic"          ; PSYCHIC_T
-	li "Hex Maniac"       ; HEX_MANIAC
+	li "Hex Maniac"       ; HEX_MANIAC_M
+	li "Hex Maniac"       ; HEX_MANIAC_F
 	li "Sage"             ; SAGE
 	li "Medium"           ; MEDIUM
 	li "Kimono Girl"      ; KIMONO_GIRL_1

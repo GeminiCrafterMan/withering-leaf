@@ -111,7 +111,8 @@
 	const SPRITE_GENTLEMAN ; 6b
 	const SPRITE_GRAMPS ; 6c
 	const SPRITE_GRANNY ; 6d
-	const SPRITE_HEX_MANIAC ; 6e
+	const SPRITE_HEX_MANIAC_M ; 6e
+	const SPRITE_HEX_MANIAC_F ; 6e ; dude i'm not redoing the numbers for this list
 	const SPRITE_HIKER ; 6f
 	const SPRITE_JUGGLER ; 70
 	const SPRITE_KIMONO_GIRL ; 71

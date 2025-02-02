@@ -6187,11 +6187,10 @@ PsychicGroup:
 	dbp LEVEL_FROM_BADGES + 6, XATU
 	db -1 ; end
 
+SECTION "HexManiacMGroup", ROMX
+HexManiacMGroup:
 
-SECTION "HexManiacGroup", ROMX
-HexManiacGroup:
-
-	; HEX_MANIAC
+	; HEX_MANIAC_M
 	db "Tamara@"
 	db TRAINERTYPE_NORMAL
 	; party
@@ -6199,7 +6198,7 @@ HexManiacGroup:
 	dbp 18, MISDREAVUS
 	db -1 ; end
 
-	; HEX_MANIAC
+	; HEX_MANIAC_M
 	db "Ashley@"
 	db TRAINERTYPE_NORMAL
 	; party
@@ -6207,7 +6206,7 @@ HexManiacGroup:
 	dbp LEVEL_FROM_BADGES + 6, MISMAGIUS
 	db -1 ; end
 
-	; HEX_MANIAC
+	; HEX_MANIAC_M
 	db "Amy@"
 	db TRAINERTYPE_NORMAL
 	; party
@@ -6217,7 +6216,7 @@ HexManiacGroup:
 	dbp 56, MISMAGIUS
 	db -1 ; end
 
-	; HEX_MANIAC
+	; HEX_MANIAC_M
 	db "Luna@"
 	db TRAINERTYPE_MOVES
 	; party
@@ -6227,7 +6226,7 @@ HexManiacGroup:
 		db PSYCHIC_M, SHADOW_BALL, CONFUSE_RAY, FLAMETHROWER
 	db -1 ; end
 
-	; HEX_MANIAC
+	; HEX_MANIAC_M
 	db "Natalie@"
 	db TRAINERTYPE_NORMAL
 	; party
@@ -6236,7 +6235,7 @@ HexManiacGroup:
 	dbp 56, HYPNO
 	db -1 ; end
 
-	; HEX_MANIAC
+	; HEX_MANIAC_M
 	db "Vivian@"
 	db TRAINERTYPE_NORMAL
 	; party
@@ -6246,7 +6245,7 @@ HexManiacGroup:
 	dbp 56, ALAKAZAM
 	db -1 ; end
 
-	; HEX_MANIAC
+	; HEX_MANIAC_M
 	db "Esther@"
 	db TRAINERTYPE_NORMAL
 	; party
@@ -6254,7 +6253,7 @@ HexManiacGroup:
 	dbp 62, MISMAGIUS
 	db -1 ; end
 
-	; HEX_MANIAC
+	; HEX_MANIAC_M
 	db "Matilda@"
 	db TRAINERTYPE_NORMAL
 	; party
@@ -6263,7 +6262,7 @@ HexManiacGroup:
 	dbp LEVEL_FROM_BADGES + 5, HYPNO
 	db -1 ; end
 
-	; HEX_MANIAC
+	; HEX_MANIAC_M
 	db "Bethany@"
 	db TRAINERTYPE_NORMAL
 	; party
@@ -6272,7 +6271,100 @@ HexManiacGroup:
 	dbp 54, MISDREAVUS
 	db -1 ; end
 
-	; HEX_MANIAC
+	; HEX_MANIAC_M
+	db "Coryn@"
+	db TRAINERTYPE_NORMAL
+	; party
+	dbp 53, MISMAGIUS
+	dbp 52, ESPEON
+	dbp 55, GENGAR
+	db -1 ; end
+
+SECTION "HexManiacFGroup", ROMX
+HexManiacFGroup:
+
+	; HEX_MANIAC_F
+	db "Tamara@"
+	db TRAINERTYPE_NORMAL
+	; party
+	dbp 16, GASTLY
+	dbp 18, MISDREAVUS
+	db -1 ; end
+
+	; HEX_MANIAC_F
+	db "Ashley@"
+	db TRAINERTYPE_NORMAL
+	; party
+	dbp LEVEL_FROM_BADGES + 5, HAUNTER
+	dbp LEVEL_FROM_BADGES + 6, MISMAGIUS
+	db -1 ; end
+
+	; HEX_MANIAC_F
+	db "Amy@"
+	db TRAINERTYPE_NORMAL
+	; party
+	dbp 53, MISDREAVUS
+	dbp 56, GENGAR
+	dbp 53, HAUNTER
+	dbp 56, MISMAGIUS
+	db -1 ; end
+
+	; HEX_MANIAC_F
+	db "Luna@"
+	db TRAINERTYPE_MOVES
+	; party
+	dbp 54, KADABRA
+		db PSYCHIC_M, SHADOW_BALL, CONFUSE_RAY, FUTURE_SIGHT
+	dbp 56, NINETALES
+		db PSYCHIC_M, SHADOW_BALL, CONFUSE_RAY, FLAMETHROWER
+	db -1 ; end
+
+	; HEX_MANIAC_F
+	db "Natalie@"
+	db TRAINERTYPE_NORMAL
+	; party
+	dbp 54, DROWZEE
+	dbp 54, DROWZEE
+	dbp 56, HYPNO
+	db -1 ; end
+
+	; HEX_MANIAC_F
+	db "Vivian@"
+	db TRAINERTYPE_NORMAL
+	; party
+	dbp 54, HAUNTER
+	dbp 52, HAUNTER
+	dbp 54, HAUNTER
+	dbp 56, ALAKAZAM
+	db -1 ; end
+
+	; HEX_MANIAC_F
+	db "Esther@"
+	db TRAINERTYPE_NORMAL
+	; party
+	dbp 62, MISMAGIUS
+	dbp 62, MISMAGIUS
+	db -1 ; end
+
+	; HEX_MANIAC_F
+	db "Matilda@"
+	db TRAINERTYPE_NORMAL
+	; party
+	dbp LEVEL_FROM_BADGES + 3, DROWZEE
+	dbp LEVEL_FROM_BADGES + 4, MISDREAVUS
+	dbp LEVEL_FROM_BADGES + 5, HYPNO
+	db -1 ; end
+
+	; HEX_MANIAC_F
+	db "Bethany@"
+	db TRAINERTYPE_NORMAL
+	; party
+	dbp 53, HAUNTER
+	dbp 55, GENGAR
+	dbp 54, MISDREAVUS
+	db -1 ; end
+
+	; HEX_MANIAC_F
 	db "Coryn@"
 	db TRAINERTYPE_NORMAL
 	; party

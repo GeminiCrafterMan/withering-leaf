@@ -48,7 +48,7 @@ BattleTowerTrainers:
 	rawchar "Newton@@@@", SCIENTIST
 	rawchar "York@@@@@@", SOLDIER
 	rawchar "Chelsea@@@", MEDIUM
-	rawchar "Kuroki@@@@", HEX_MANIAC
+	rawchar "Kuroki@@@@", HEX_MANIAC_F
 	rawchar "Hitesh@@@@", POKEMANIAC
 	rawchar "Abdul@@@@@", ENGINEER
 	rawchar "Emily@@@@@", LASS
@@ -71,7 +71,7 @@ BattleTowerTrainers:
 	rawchar "Santiago@@", PSYCHIC_T
 	rawchar "Blake@@@@@", YOUNGSTER
 	rawchar "James@@@@@", BOARDER
-	rawchar "Kubrick@@@", HEX_MANIAC
+	rawchar "Kubrick@@@", HEX_MANIAC_M
 	rawchar "Alisha@@@@", LASS
 	rawchar "Sunni@@@@@", KIMONO_GIRL_1
 	rawchar "Andre@@@@@", ROUGHNECK

@@ -19,7 +19,7 @@ MountMoonB2F_MapScriptHeader:
 	def_object_events
 	object_event 24,  9, SPRITE_YOUNGSTER, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerYoungsterJosh, -1
 	object_event 12, 21, SPRITE_BIRD_KEEPER, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerBird_keeperMick, -1
-	object_event 29, 18, SPRITE_HEX_MANIAC, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerHexManiacEsther, -1
+	object_event 29, 18, SPRITE_HEX_MANIAC_F, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerHexManiacFEsther, -1
 	object_event  4, 15, SPRITE_ACE_TRAINER_M, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerCooltrainermConnor, -1
 	object_event  9,  8, SPRITE_SUPER_NERD, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 2, GenericTrainerSuperNerdMiguel, -1
 	object_event 10,  6, SPRITE_BOULDER_ROCK_FOSSIL, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_ITEMBALL, PLAYEREVENT_ITEMBALL, HELIX_FOSSIL, 1, EVENT_MOUNT_MOON_B2F_HELIX_FOSSIL
@@ -56,8 +56,8 @@ GenericTrainerBird_keeperMick:
 	line "where sensible."
 	done
 
-GenericTrainerHexManiacEsther:
-	generictrainer HEX_MANIAC, ESTHER, EVENT_BEAT_HEX_MANIAC_ESTHER, HexManiacEstherSeenText, HexManiacEstherBeatenText
+GenericTrainerHexManiacFEsther:
+	generictrainer HEX_MANIAC_F, ESTHER, EVENT_BEAT_HEX_MANIAC_F_ESTHER, HexManiacFEstherSeenText, HexManiacFEstherBeatenText
 
 	text "Magic mirror,"
 	line "great and wise,"
@@ -110,7 +110,7 @@ Bird_keeperMickBeatenText:
 	line "bad idea."
 	done
 
-HexManiacEstherSeenText:
+HexManiacFEstherSeenText:
 	text "Mirror, mirror,"
 	line "on the wall,"
 
@@ -118,7 +118,7 @@ HexManiacEstherSeenText:
 	line "their # Ball?"
 	done
 
-HexManiacEstherBeatenText:
+HexManiacFEstherBeatenText:
 	text "You will!"
 	done
 

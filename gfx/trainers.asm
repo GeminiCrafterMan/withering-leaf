@@ -175,8 +175,11 @@ SchoolgirlPic: INCBIN "gfx/trainers/schoolgirl.2bpp.lz"
 SECTION "PsychicTPic", ROMX
 PsychicTPic: INCBIN "gfx/trainers/psychic_t.2bpp.lz"
 
-SECTION "HexManiacPic", ROMX
-HexManiacPic: INCBIN "gfx/trainers/hex_maniac.2bpp.lz"
+SECTION "HexManiacMPic", ROMX
+HexManiacMPic: INCBIN "gfx/trainers/hex_maniac_m.2bpp.lz"
+
+SECTION "HexManiacFPic", ROMX
+HexManiacFPic: INCBIN "gfx/trainers/hex_maniac_f.2bpp.lz"
 
 SECTION "SagePic", ROMX
 SagePic: INCBIN "gfx/trainers/sage.2bpp.lz"

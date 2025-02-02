@@ -14,7 +14,7 @@ PsychicInversHouse_MapScriptHeader:
 
 	def_object_events
 	object_event  2,  2, SPRITE_PSYCHIC, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, PsychicInverScript, -1
-	object_event  6,  3, SPRITE_HEX_MANIAC, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, 0, OBJECTTYPE_COMMAND, jumptextfaceplayer, PsychicInversHouseHexManiacText, -1
+	object_event  6,  3, SPRITE_HEX_MANIAC_F, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, 0, OBJECTTYPE_COMMAND, jumptextfaceplayer, PsychicInversHouseHexManiacFText, -1
 
 	object_const_def
 	const PSYCHICINVERSHOUSE_INVER
@@ -178,7 +178,7 @@ PsychicInverTomorrowText:
 	line "tomorrow."
 	done
 
-PsychicInversHouseHexManiacText:
+PsychicInversHouseHexManiacFText:
 	text "My brother has a"
 	line "mysterious power!"
 

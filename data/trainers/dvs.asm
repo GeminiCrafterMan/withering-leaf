@@ -61,7 +61,8 @@ TrainerClassDVsAndPersonality:
 	db  48, $CC, $CC, $CC, MALE   ; schoolboy
 	db  48, $CC, $CC, $CC, FEMALE ; schoolgirl
 	db  48, $AA, $CC, $EE, MALE   ; psychic
-	db  48, $AA, $CC, $EE, FEMALE ; hex maniac
+	db  48, $AA, $CC, $EE, MALE   ; hex maniac_m
+	db  48, $AA, $CC, $EE, FEMALE ; hex maniac_f
 	db  48, $CC, $CC, $CC, MALE   ; sage
 	db  48, $CC, $CC, $CC, FEMALE ; medium
 	db  56, $DD, $DD, $DD, FEMALE ; kimono girl 1

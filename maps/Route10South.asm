@@ -15,7 +15,7 @@ Route10South_MapScriptHeader:
 	def_object_events
 	object_event 17,  5, SPRITE_HIKER, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerHikerJim, -1
 	object_event  4,  7, SPRITE_POKEFAN_M, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 4, GenericTrainerPokefanmRobert, -1
-	object_event  8, 12, SPRITE_HEX_MANIAC, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 4, GenericTrainerHexManiacAmy, -1
+	object_event  8, 12, SPRITE_HEX_MANIAC_F, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 4, GenericTrainerHexManiacFAmy, -1
 	tmhmball_event  9,  7, TM_VOLT_SWITCH, EVENT_ROUTE_10_TM_VOLT_SWITCH
 
 GenericTrainerHikerJim:
@@ -36,8 +36,8 @@ GenericTrainerPokefanmRobert:
 	line "this…"
 	done
 
-GenericTrainerHexManiacAmy:
-	generictrainer HEX_MANIAC, AMY, EVENT_BEAT_HEX_MANIAC_AMY, HexManiacAmySeenText, HexManiacAmyBeatenText
+GenericTrainerHexManiacFAmy:
+	generictrainer HEX_MANIAC_F, AMY, EVENT_BEAT_HEX_MANIAC_F_AMY, HexManiacFAmySeenText, HexManiacFAmyBeatenText
 
 	text "A Hex Maniac is"
 	line "at peace among"
@@ -64,14 +64,14 @@ PokefanmRobertBeatenText:
 	line "that's my loss."
 	done
 
-HexManiacAmySeenText:
+HexManiacFAmySeenText:
 	text "Lavender Town…"
 
 	para "Where the spirits"
 	line "of #mon sleep…"
 	done
 
-HexManiacAmyBeatenText:
+HexManiacFAmyBeatenText:
 	text "Your #mon are"
 	line "overflowing with"
 	cont "vitality…"
