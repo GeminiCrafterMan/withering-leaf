@@ -256,6 +256,7 @@ MoveDescriptions::
 	dw PlayRoughDescription
 	dw DisarmVoiceDescription
 	dw StruggleDescription
+	;dw WorrySeedDescription
 	assert_table_length NUM_ATTACKS
 	dw Move00Description
 	assert_table_length $100
@@ -1250,4 +1251,9 @@ GyroBallDescription:
 TrickDescription:
 	text "Swaps held items"
 	next "with the foe."
+	done
+
+WorrySeedDescription:
+	text "Makes target's"
+	next "ability Insomnia."
 	done

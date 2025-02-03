@@ -246,11 +246,12 @@ endr
 	loadmem wPartyMon2PP+3, 10
 	; variant form test
 	; give Gracedia Flower when it gets added and works...
-	givepoke SHAYMIN, PLAIN_FORM, 50, LUM_BERRY
-	givepoke SHAYMIN, SHAYMIN_SKY_FORME, 50
-	givepoke SHAYMIN, PLAIN_FORM, 50, LUM_BERRY
+	givepoke SHAYMIN, PLAIN_FORM, 60, LUM_BERRY
+	givepoke SHAYMIN, SHAYMIN_SKY_FORME, 60
+	; shiny ones
+	givepoke SHAYMIN, PLAIN_FORM, 60, LUM_BERRY
 	loadmem wPartyMon5Shiny, SHINY_MASK
-	givepoke SHAYMIN, SHAYMIN_SKY_FORME, 50
+	givepoke SHAYMIN, SHAYMIN_SKY_FORME, 60
 	loadmem wPartyMon6Shiny, SHINY_MASK
 	; fill pokedex
 	callasm FillPokedex

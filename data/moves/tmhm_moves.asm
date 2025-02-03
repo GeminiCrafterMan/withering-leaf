@@ -76,6 +76,9 @@ TMHMMoves:
 	db THUNDER_WAVE ; TM73 (Rock Tunnel)
 	db GYRO_BALL    ; TM74 (Magnet Tunnel)
 	db SWORDS_DANCE ; TM75 (Celadon Dept. Store)
+	db TAKE_DOWN    ; TM76 (???)
+	db DISARM_VOICE ; TM77 (???)
+	db AIR_SLASH    ; TM78 (???)
 	assert_table_length NUM_TMS
 	db CUT          ; HM01 (Ilex Forest)
 	db FLY          ; HM02 (Cianwood City)

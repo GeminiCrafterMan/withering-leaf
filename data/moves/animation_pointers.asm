@@ -262,6 +262,7 @@ endc
 	fardw BattleAnim_PlayRough
 	fardw BattleAnim_DisarmVoice
 	fardw BattleAnim_Struggle
+	;fardw BattleAnim_LeechSeed
 	assert_table_length NUM_ATTACKS + 1
 	assert_table_length $100
 ; $100

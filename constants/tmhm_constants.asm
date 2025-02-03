@@ -97,6 +97,9 @@ endc
 	add_tm THUNDER_WAVE ; $48
 	add_tm GYRO_BALL    ; $49
 	add_tm SWORDS_DANCE ; $4a
+	add_tm TAKE_DOWN    ; $4b
+	add_tm DISARM_VOICE ; $4c
+	add_tm AIR_SLASH    ; $4d
 DEF NUM_TMS = __tmhm_value__ - 1
 
 MACRO add_hm

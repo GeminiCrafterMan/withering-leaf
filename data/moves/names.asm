@@ -260,4 +260,5 @@ endc
 	li "Play Rough"
 	li "Disarm Voice"
 	li "Struggle"
+	;li "Worry Seed"
 	assert_list_length NUM_ATTACKS + 1

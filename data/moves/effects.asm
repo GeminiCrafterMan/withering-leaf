@@ -2114,3 +2114,14 @@ FlareBlitz:
 	posthiteffects
 	burntarget
 	endmove
+
+GiveInsomnia:
+	checkobedience
+	usedmovetext
+	doturn
+	hastarget
+	checkhit
+	checkpriority
+	bounceback
+	leechseed;giveinsomnia
+	endmove

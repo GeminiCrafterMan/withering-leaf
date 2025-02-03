@@ -264,6 +264,7 @@ endc
 	const PLAY_ROUGH    ; $fd
 	const DISARM_VOICE  ; $fe
 	const STRUGGLE      ; $ff
+	;const WORRY_SEED	; $100?
 DEF NUM_ATTACKS EQU const_value - 1
 ; Battle animations use the same constants as the moves up to this point
 	; These animations don't play if battle anims are disabled.
