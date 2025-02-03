@@ -12,7 +12,7 @@
 
 ## Graphics
 
-* SuzieScattersilk for the Gen 6 Hex Maniac sprite.
+* SuzieScattersilk for the [Gen 6 Hex Maniac sprite](gfx/trainers/hex_maniac_f.png). TODO: Finish [her overworld sprites](gfx/sprites/hex_maniac_f.png).
 
 ## Content
 
