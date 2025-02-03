@@ -245,16 +245,13 @@ endr
 	loadmem wPartyMon2PP+2, 10
 	loadmem wPartyMon2PP+3, 10
 	; variant form test
-	givepoke TYPHLOSION, HISUIAN_FORM, 50
-	loadmem wPartyMon3Shiny, SHINY_MASK
-	; ext species test
-	givepoke URSALUNA, URSALUNA_BLOODMOON_FORM, 50
-	givepoke DUDUNSPARCE, DUDUNSPARCE_THREE_SEGMENT_FORM, 50
-	; evolve during battle
-;	givepoke PUPITAR, 54
-;	loadmem wPartyMon6Exp+2, LOW(207967)
-;	loadmem wPartyMon6Exp+1, HIGH(207967)
-;	loadmem wPartyMon6Exp+0, 207967 >> 16
+	; give Gracedia Flower when it gets added and works...
+	givepoke SHAYMIN, PLAIN_FORM, 50, LUM_BERRY
+	givepoke SHAYMIN, SHAYMIN_SKY_FORME, 50
+	givepoke SHAYMIN, PLAIN_FORM, 50, LUM_BERRY
+	loadmem wPartyMon5Shiny, SHINY_MASK
+	givepoke SHAYMIN, SHAYMIN_SKY_FORME, 50
+	loadmem wPartyMon6Shiny, SHINY_MASK
 	; fill pokedex
 	callasm FillPokedex
 ;	; new bark events
@@ -303,7 +300,7 @@ endr
 	; vermilion events
 	setmapscene VERMILION_CITY, $1
 	closetext
-	warpfacing DOWN, GOLDENROD_CITY, 13, 14
+;	warpfacing DOWN, GOLDENROD_CITY, 13, 14
 	end
 
 FillPokedex:

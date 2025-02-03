@@ -315,8 +315,9 @@
 	const FARIGIRAF  ; 121
 	const CLODSIRE   ; 122
 	const ANNIHILAPE ; 123
-DEF NUM_SPECIES EQU const_value - 1 ; 123
-DEF NUM_POKEMON EQU NUM_SPECIES - (2 * HIGH(NUM_SPECIES)) ; 121
+	const SHAYMIN    ; 124
+DEF NUM_SPECIES EQU const_value - 1 ; 124
+DEF NUM_POKEMON EQU NUM_SPECIES - (2 * HIGH(NUM_SPECIES)) ; 122
 
 DEF CANCEL EQU -1
 
@@ -499,6 +500,10 @@ DEF PALDEAN_FORM EQU 5
 ; ursaluna
 	ext_const_def 2
 	ext_const URSALUNA_BLOODMOON_FORM ; 189 (2)
+
+; shaymin
+	ext_const_def 2
+	ext_const SHAYMIN_SKY_FORME ; 15d (2)
 
 DEF NUM_VARIANT_FORMS EQU const_value - FIRST_VARIANT_FORM_MON ; 2d
 

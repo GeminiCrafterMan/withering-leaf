@@ -291,4 +291,5 @@ NewPokedexOrder:
 	dp MEWTWO
 	dp MEW
 	dp CELEBI
+	dp SHAYMIN
 	assert_table_length NUM_POKEMON

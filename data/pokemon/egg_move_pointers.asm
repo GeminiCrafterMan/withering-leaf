@@ -291,6 +291,7 @@ EggMovePointers::
 	dw GirafarigEggMoves         ; Farigiraf
 	dw WooperPaldeanEggMoves     ; Clodsire
 	dw MankeyEggMoves            ; Annihilape
+	dw NoEggMoves                ; Shaymin (Land Forme)
 	assert_table_length NUM_SPECIES
 
 	dw NoEggMoves                ; Gyarados (Red Form)
@@ -346,5 +347,7 @@ EggMovePointers::
 	dw NoEggMoves                ; Tauros (Paldean Water Form)
 
 	dw NoEggMoves                ; Ursaluna (Bloodmoon Form)
+
+	dw NoEggMoves                ; Shaymin (Sky Forme)
 
 	assert_table_length NUM_EXT_POKEMON

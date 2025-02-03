@@ -291,6 +291,7 @@ FramesPointers:
 	dw FarigirafFrames
 	dw ClodsireFrames
 	dw AnnihilapeFrames
+	dw ShayminLandFrames
 	assert_table_length NUM_SPECIES
 
 	dw UnownBFrames
@@ -409,5 +410,7 @@ FramesPointers:
 	dw TaurosPaldeanWaterFrames
 
 	dw UrsalunaBloodmoonFrames
+
+	dw ShayminSkyFrames
 
 	assert_table_length NUM_UNIQUE_POKEMON

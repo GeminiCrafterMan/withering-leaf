@@ -291,6 +291,7 @@ BitmasksPointers:
 	dw FarigirafBitmasks
 	dw ClodsireBitmasks
 	dw AnnihilapeBitmasks
+	dw ShayminLandBitmasks
 	assert_table_length NUM_SPECIES
 
 	dw UnownBBitmasks
@@ -409,5 +410,7 @@ BitmasksPointers:
 	dw TaurosPaldeanWaterBitmasks
 
 	dw UrsalunaBloodmoonBitmasks
+
+	dw ShayminSkyBitmasks
 
 	assert_table_length NUM_UNIQUE_POKEMON

@@ -223,6 +223,7 @@ AlphabeticalPokedexOrder:
 	dp SEAKING
 	dp SEEL
 	dp SENTRET
+	dp SHAYMIN
 	dp SHELLDER
 	dp SHUCKLE
 	dp SIRFETCH_D

@@ -291,6 +291,7 @@ FootprintPointers::
 	dw FarigirafFootprint
 	dw ClodsireFootprint
 	dw AnnihilapeFootprint
+	dw ShayminFootprint
 	assert_table_length NUM_SPECIES
 
 	dw GyaradosFootprint
@@ -346,5 +347,7 @@ FootprintPointers::
 	dw TaurosFootprint
 
 	dw UrsalunaFootprint
+
+	dw ShayminFootprint
 
 	assert_table_length NUM_EXT_POKEMON

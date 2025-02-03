@@ -6544,6 +6544,40 @@ AnnihilapeEvosAttacks:
 	db 53, OUTRAGE
 	db -1 ; no more level-up moves
 
+ShayminLandEvosAttacks:
+; TODO: re-add some of these moves
+	db -1 ; no more evolutions
+	db 1, GROWTH
+	;db 10, MAGICAL_LEAF
+	db 19, LEECH_SEED
+	;db 28, SYNTHESIS
+	;db 37, SWEET_SCENT
+	db 46, PLAY_ROUGH
+	;db 55, WORRY_SEED
+	;db 64, GRASSY_TERRAIN
+	db 73, ENERGY_BALL
+	db 82, SWEET_KISS
+	;db 91, HEALING_WISH
+	;db 100, SEED_FLARE
+	db -1 ; no more level-up moves
+
+ShayminSkyEvosAttacks:
+; TODO: re-add some of these moves
+	db -1 ; no more evolutions
+	db 1, GROWTH
+	;db 10, MAGICAL_LEAF
+	db 19, LEECH_SEED
+	db 28, QUICK_ATTACK
+	;db 37, SWEET_SCENT
+	db 46, PLAY_ROUGH
+	;db 55, WORRY_SEED
+	db 64, AIR_SLASH
+	db 73, ENERGY_BALL
+	db 82, SWEET_KISS
+	;db 91, LEAF_STORM
+	;db 100, SEED_FLARE
+	db -1 ; no more level-up moves
+
 EggEvosAttacks::
 	db -1 ; no more evolutions
 	db -1 ; no more level-up moves

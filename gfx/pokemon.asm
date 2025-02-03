@@ -944,6 +944,14 @@ SECTION "UrsalunaBloodmoon Pics", ROMX
 UrsalunaBloodmoonFrontpic: INCBIN "gfx/pokemon/ursaluna_bloodmoon/front.animated.2bpp.lz"
 UrsalunaBloodmoonBackpic:  INCBIN "gfx/pokemon/ursaluna_bloodmoon/back.2bpp.lz"
 
+SECTION "ShayminLand Pics", ROMX
+ShayminLandFrontpic: INCBIN "gfx/pokemon/shaymin_land/front.animated.2bpp.lz"
+ShayminLandBackpic:  INCBIN "gfx/pokemon/shaymin_land/back.2bpp.lz"
+
+SECTION "ShayminSky Pics", ROMX
+ShayminSkyFrontpic: INCBIN "gfx/pokemon/shaymin_sky/front.animated.2bpp.lz"
+ShayminSkyBackpic:  INCBIN "gfx/pokemon/shaymin_sky/back.2bpp.lz"
+
 SECTION "EggPic", ROMX
 EggPic: INCBIN "gfx/pokemon/egg/front.animated.2bpp.lz"
 

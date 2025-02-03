@@ -295,6 +295,7 @@ MiniIconPointers:
 	mini_icon Farigiraf
 	mini_icon Clodsire
 	mini_icon Annihilape
+	mini_icon ShayminLand
 	assert_table_length NUM_SPECIES
 
 	mini_icon UnownB
@@ -397,5 +398,7 @@ endr
 	mini_icon TaurosPaldeanWater
 
 	mini_icon UrsalunaBloodmoon
+
+	mini_icon ShayminSky
 
 	assert_table_length NUM_UNIQUE_POKEMON

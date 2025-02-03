@@ -309,6 +309,7 @@ INCLUDE "gfx/pokemon/dudunsparce_two_segment/front.dimensions"
 INCLUDE "gfx/pokemon/farigiraf/front.dimensions"
 INCLUDE "gfx/pokemon/clodsire/front.dimensions"
 INCLUDE "gfx/pokemon/annihilape/front.dimensions"
+INCLUDE "gfx/pokemon/shaymin_land/front.dimensions"
 	assert_list_length NUM_SPECIES
 
 INCLUDE "gfx/pokemon/unown_b/front.dimensions"
@@ -427,6 +428,8 @@ INCLUDE "gfx/pokemon/tauros_paldean_fire/front.dimensions"
 INCLUDE "gfx/pokemon/tauros_paldean_water/front.dimensions"
 
 INCLUDE "gfx/pokemon/ursaluna_bloodmoon/front.dimensions"
+
+INCLUDE "gfx/pokemon/shaymin_sky/front.dimensions"
 
 	if list_index % 2
 		db size_value << 4

@@ -295,6 +295,7 @@ EvosAttacksPointers::
 	dw FarigirafEvosAttacks
 	dw ClodsireEvosAttacks
 	dw AnnihilapeEvosAttacks
+	dw ShayminLandEvosAttacks
 	assert_table_length NUM_SPECIES
 
 	dw GyaradosEvosAttacks
@@ -350,5 +351,7 @@ EvosAttacksPointers::
 	dw TaurosPaldeanWaterEvosAttacks
 
 	dw UrsalunaBloodmoonEvoAttacks
+
+	dw ShayminSkyEvosAttacks
 
 	assert_table_length NUM_EXT_POKEMON

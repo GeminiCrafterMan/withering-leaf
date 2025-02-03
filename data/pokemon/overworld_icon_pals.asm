@@ -295,6 +295,7 @@ OverworldMonIconColors::
 	iconpal BROWN, BLUE ; FARIGIRAF
 	iconpal BROWN, BLUE ; CLODSIRE
 	iconpal GRAY, PURPLE ; ANNIHILAPE
+	iconpal GREEN, PINK ; SHAYMIN
 	assert_table_length NUM_SPECIES
 
 rept NUM_UNOWN - 1
@@ -370,5 +371,7 @@ endr
 	iconpal BLUE, GREEN ; TAUROS, TAUROS_PALDEAN_WATER_FORM
 
 	iconpal BROWN, RED ; URSALUNA, URSALUNA_BLOODMOON_FORM
+
+	iconpal GREEN, PINK ; SHAYMIN, SHAYMIN_SKY_FORME
 
 	assert_table_length NUM_UNIQUE_POKEMON

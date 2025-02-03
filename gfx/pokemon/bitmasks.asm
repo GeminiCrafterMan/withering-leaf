@@ -439,3 +439,6 @@ TaurosPaldeanWaterBitmasks: INCLUDE "gfx/pokemon/tauros_paldean_water/bitmask.as
 
 UrsalunaPlainBitmasks:     INCLUDE "gfx/pokemon/ursaluna_plain/bitmask.asm"
 UrsalunaBloodmoonBitmasks: INCLUDE "gfx/pokemon/ursaluna_bloodmoon/bitmask.asm"
+
+ShayminLandBitmasks:     INCLUDE "gfx/pokemon/shaymin_land/bitmask.asm"
+ShayminSkyBitmasks:      INCLUDE "gfx/pokemon/shaymin_sky/bitmask.asm"

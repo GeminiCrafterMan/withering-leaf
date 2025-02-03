@@ -1457,6 +1457,11 @@ AnnihilapeMini::     INCBIN "gfx/minis/annihilape.2bpp.lz"
 AnnihilapeMiniMask:: INCBIN "gfx/minis/annihilape_mask.1bpp.lz"
 AnnihilapeIcon::     INCBIN "gfx/icons/annihilape.2bpp.lz"
 
+SECTION "ShayminLand Mini Icon", ROMX
+ShayminLandMini::     INCBIN "gfx/minis/shaymin_land.2bpp.lz"
+ShayminLandMiniMask:: INCBIN "gfx/minis/shaymin_land_mask.1bpp.lz"
+ShayminLandIcon::     INCBIN "gfx/icons/shaymin_land.2bpp.lz"
+
 SECTION "UnownB Mini Icon", ROMX
 UnownBMini::     INCBIN "gfx/minis/unown_b.2bpp.lz"
 UnownBMiniMask:: INCBIN "gfx/minis/unown_b_mask.1bpp.lz"
@@ -1816,3 +1821,8 @@ SECTION "UrsalunaBloodmoon Mini Icon", ROMX
 UrsalunaBloodmoonMini::     INCBIN "gfx/minis/ursaluna_bloodmoon.2bpp.lz"
 UrsalunaBloodmoonMiniMask:: INCBIN "gfx/minis/ursaluna_bloodmoon_mask.1bpp.lz"
 UrsalunaBloodmoonIcon::     INCBIN "gfx/icons/ursaluna_bloodmoon.2bpp.lz"
+
+SECTION "ShayminSky Mini Icon", ROMX
+ShayminSkyMini::     INCBIN "gfx/minis/shaymin_sky.2bpp.lz"
+ShayminSkyMiniMask:: INCBIN "gfx/minis/shaymin_sky_mask.1bpp.lz"
+ShayminSkyIcon::     INCBIN "gfx/icons/shaymin_sky.2bpp.lz"

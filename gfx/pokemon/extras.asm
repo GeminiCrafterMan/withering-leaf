@@ -439,3 +439,6 @@ TaurosPaldeanWaterAnimationExtra: INCLUDE "gfx/pokemon/tauros_paldean_water/anim
 
 UrsalunaPlainAnimationExtra:     INCLUDE "gfx/pokemon/ursaluna_plain/anim_idle.asm"
 UrsalunaBloodmoonAnimationExtra: INCLUDE "gfx/pokemon/ursaluna_bloodmoon/anim_idle.asm"
+
+ShayminLandAnimationExtra: INCLUDE "gfx/pokemon/shaymin_land/anim_idle.asm"
+ShayminSkyAnimationExtra: INCLUDE "gfx/pokemon/shaymin_sky/anim_idle.asm"

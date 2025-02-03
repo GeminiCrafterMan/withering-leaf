@@ -295,6 +295,7 @@ PokemonPicPointers::
 	pics Farigiraf
 	pics Clodsire
 	pics Annihilape
+	pics ShayminLand
 	assert_table_length NUM_SPECIES
 
 	pics UnownB
@@ -413,5 +414,7 @@ PokemonPicPointers::
 	pics TaurosPaldeanWater
 
 	pics UrsalunaBloodmoon
+
+	pics ShayminSky
 
 	assert_table_length NUM_UNIQUE_POKEMON

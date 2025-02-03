@@ -2895,6 +2895,16 @@ AnnihilapePokedexEntry::
 	next "ttered by its"
 	next "physical body.@"
 
+SECTION "ShayminLandPokedexEntry", ROMX
+ShayminLandPokedexEntry::
+	db "Gratitude@"
+	db   "It can dissolve"
+	next "toxins in the air"
+	next "to instantly"
+	page "transform ruined"
+	next "land into a lush"
+	next "field of flowers.@"
+
 SECTION "GyaradosRedPokedexEntry", ROMX
 GyaradosRedPokedexEntry::
 	db "Atrocious@"
@@ -3346,3 +3356,13 @@ UrsalunaBloodmoonPokedexEntry::
 	page "itself with mud"
 	next "that is as hard as"
 	next "iron.@"
+
+SECTION "ShayminSkyPokedexEntry", ROMX
+ShayminSkyPokedexEntry::
+	db "Gratitude@"
+	db   "When Gracidea"
+	next "flowers bloom, it"
+	next "changes Forme and"
+	page "takes flight to"
+	next "deliver feelings of"
+	next "gratitude.@"

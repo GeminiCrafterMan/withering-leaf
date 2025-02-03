@@ -21,6 +21,7 @@ TypeNames:
 	dr Dark
 	dr Fairy
 	dr UnknownType
+	dr Shadow
 	assert_table_length NUM_TYPES
 
 EggGroupNames:
@@ -63,6 +64,7 @@ Dragon:      db "Dragon@"
 Dark:        db "Dark@"
 Fairy:       db "Fairy@"
 UnknownType: db "???@"
+Shadow:      db "Shadow@"
 
 Monster:      db "Monster@"
 Field:        db "Field@"

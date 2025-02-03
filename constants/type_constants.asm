@@ -24,6 +24,7 @@ DEF SPECIAL_TYPES EQU const_value
 	const DARK      ; 10
 	const FAIRY     ; 11
 	const UNKNOWN_T ; 12
+	const SHADOW	; 13
 DEF NUM_TYPES EQU const_value
 
 ; categories

@@ -291,6 +291,7 @@ AnimationExtraPointers:
 	dw FarigirafAnimationExtra
 	dw ClodsireAnimationExtra
 	dw AnnihilapeAnimationExtra
+	dw ShayminLandAnimationExtra
 	assert_table_length NUM_SPECIES
 
 	dw UnownBAnimationExtra
@@ -409,5 +410,7 @@ AnimationExtraPointers:
 	dw TaurosPaldeanWaterAnimationExtra
 
 	dw UrsalunaBloodmoonAnimationExtra
+
+	dw ShayminSkyAnimationExtra
 
 	assert_table_length NUM_UNIQUE_POKEMON

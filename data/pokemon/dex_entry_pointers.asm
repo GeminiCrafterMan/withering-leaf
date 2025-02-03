@@ -292,6 +292,7 @@ PokedexDataPointerTable:
 	dba FarigirafPokedexEntry
 	dba ClodsirePokedexEntry
 	dba AnnihilapePokedexEntry
+	dba ShayminLandPokedexEntry
 	assert_table_length NUM_SPECIES
 
 	dba GyaradosRedPokedexEntry
@@ -347,5 +348,7 @@ PokedexDataPointerTable:
 	dba TaurosPaldeanWaterPokedexEntry
 
 	dba UrsalunaBloodmoonPokedexEntry
+
+	dba ShayminSkyPokedexEntry
 
 	assert_table_length NUM_EXT_POKEMON
