@@ -25,16 +25,12 @@ DoEncoreDisable:
 
 	ld a, BATTLE_VARS_LAST_COUNTER_MOVE_OPP
 	call GetBattleVar
-	and a
-	jr z, .failed
-	cp STRUGGLE
-	jr z, .failed
-
-	; Don't allow encoring Encore
-	cp b
-	jr nz, .move_ok
-	cp ENCORE
-	jr z, .failed
+	ld b, a
+	push hl
+	ld hl, .invalid_moves
+	call CheckMoveInList
+	pop hl
+	jp c, .failed
 .move_ok
 
 	push hl
@@ -106,3 +102,9 @@ DoEncoreDisable:
 
 	call AnimateFailedMove
 	jmp PrintButItFailed
+
+.invalid_moves
+	dw NO_MOVE
+	dw STRUGGLE
+	dw ENCORE
+	dw -1

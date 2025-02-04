@@ -478,12 +478,20 @@ ParsePlayerAction:
 	jr nz, .locked_in
 	ld a, [wBattlePlayerAction]
 	cp $2
-	jr z, .reset_rage
+	jp z, .reset_rage
 	and a
 	jr nz, .reset_bide
 	xor a
 	ld [wMoveSelectionMenuType], a
-	inc a ; ld a, ACROBATICS
+	if HIGH(ACROBATICS)
+		ld a, HIGH(ACROBATICS)
+	endc
+	ld [wFXAnimID + 1], a
+	if LOW(ACROBATICS) == (HIGH(ACROBATICS) + 1)
+		inc a
+	else
+		ld a, LOW(ACROBATICS)
+	endc
 	ld [wFXAnimIDLo], a
 	call MoveSelectionScreen
 	push af
@@ -495,7 +503,17 @@ ParsePlayerAction:
 	call FarCopyColorWRAM
 	call SetDefaultBGPAndOBP
 	ld a, [wCurPlayerMove]
-	inc a ; cp STRUGGLE
+	call GetMoveIndexFromID
+	ld a, h
+	if HIGH(STRUGGLE)
+		cp HIGH(STRUGGLE)
+	else
+		and a
+	endc
+	jr nz, .not_struggle
+	ld a, l
+	cp LOW(STRUGGLE)
+.not_struggle
 	call nz, PlayClickSFX
 	ld a, $1
 	ldh [hBGMapMode], a
@@ -657,9 +675,9 @@ GetMovePriority:
 INCLUDE "data/moves/priorities.asm"
 
 GetMoveEffect:
-	ld a, b
-	ld hl, Moves + MOVE_EFFECT
-	call GetMoveProperty
+	ld l, b
+	ld a, MOVE_EFFECT
+	call GetMoveProperty ;GetMoveAttribute?
 	ld b, a
 	ret
 
@@ -5190,7 +5208,8 @@ MoveSelectionScreen:
 
 .struggle
 	call ClearSprites
-	ld a, STRUGGLE
+	ld hl, STRUGGLE
+	call GetMoveIDFromIndex
 	ld [wCurPlayerMove], a
 	ld hl, BattleText_PkmnHasNoMovesLeft
 	call StdBattleTextbox
@@ -5782,7 +5801,8 @@ ParseEnemyAction:
 	ret
 
 .struggle
-	ld a, STRUGGLE
+	ld hl, STRUGGLE
+	call GetMoveIDFromIndex
 	jr .finish
 
 ResetVarsForSubstatusRage:
@@ -5855,7 +5875,15 @@ endc
 	and a
 	jr nz, .switch
 	ld a, [wCurPlayerMove]
-	inc a ; cp STRUGGLE
+	if HIGH(STRUGGLE)
+		ld a, HIGH(STRUGGLE)
+	endc
+	ld [wFXAnimID + 1], a
+	if LOW(STRUGGLE) == (HIGH(STRUGGLE) + 1)
+		inc a
+	else
+		ld a, LOW(STRUGGLE)
+	endc
 	ld a, BATTLEACTION_STRUGGLE
 	jr z, .use_move
 	ld a, [wCurMoveNum]

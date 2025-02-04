@@ -213,27 +213,28 @@ endr
 	; post-e4
 	setflag ENGINE_CREDITS_SKIP
 	; good party
-	givepoke MEWTWO, MEWTWO_ARMORED_FORM, 100, BRIGHTPOWDER
-	loadmem wPartyMon1EVs+0, 252
-	loadmem wPartyMon1EVs+1, 252
-	loadmem wPartyMon1EVs+2, 252
-	loadmem wPartyMon1EVs+3, 252
-	loadmem wPartyMon1EVs+4, 252
-	loadmem wPartyMon1EVs+5, 252
-	loadmem wPartyMon1DVs+0, $ff
-	loadmem wPartyMon1DVs+1, $ff
-	loadmem wPartyMon1DVs+2, $ff
-	loadmem wPartyMon1Personality, ABILITY_2 | NAT_SATK_UP_ATK_DOWN
-	loadmem wPartyMon1Stats+0, HIGH(999)
-	loadmem wPartyMon1Stats+1, LOW(999)
-	loadmem wPartyMon1Stats+2, HIGH(999)
-	loadmem wPartyMon1Stats+3, LOW(999)
-	loadmem wPartyMon1Stats+4, HIGH(999)
-	loadmem wPartyMon1Stats+5, LOW(999)
-	loadmem wPartyMon1Stats+6, HIGH(999)
-	loadmem wPartyMon1Stats+7, LOW(999)
-	loadmem wPartyMon1Stats+8, HIGH(999)
-	loadmem wPartyMon1Stats+9, LOW(999)
+	givepoke SMEARGLE, PLAIN_FORM, 50
+	;givepoke MEWTWO, MEWTWO_ARMORED_FORM, 100, BRIGHTPOWDER
+	;loadmem wPartyMon1EVs+0, 252
+	;loadmem wPartyMon1EVs+1, 252
+	;loadmem wPartyMon1EVs+2, 252
+	;loadmem wPartyMon1EVs+3, 252
+	;loadmem wPartyMon1EVs+4, 252
+	;loadmem wPartyMon1EVs+5, 252
+	;loadmem wPartyMon1DVs+0, $ff
+	;loadmem wPartyMon1DVs+1, $ff
+	;loadmem wPartyMon1DVs+2, $ff
+	;loadmem wPartyMon1Personality, ABILITY_2 | NAT_SATK_UP_ATK_DOWN
+	;loadmem wPartyMon1Stats+0, HIGH(999)
+	;loadmem wPartyMon1Stats+1, LOW(999)
+	;loadmem wPartyMon1Stats+2, HIGH(999)
+	;loadmem wPartyMon1Stats+3, LOW(999)
+	;loadmem wPartyMon1Stats+4, HIGH(999)
+	;loadmem wPartyMon1Stats+5, LOW(999)
+	;loadmem wPartyMon1Stats+6, HIGH(999)
+	;loadmem wPartyMon1Stats+7, LOW(999)
+	;loadmem wPartyMon1Stats+8, HIGH(999)
+	;loadmem wPartyMon1Stats+9, LOW(999)
 	; hm slave
 	givepoke MEW, PLAIN_FORM, 100, LEFTOVERS
 	loadmem wPartyMon2Moves+0, FLY

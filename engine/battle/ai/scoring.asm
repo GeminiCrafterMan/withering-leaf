@@ -976,7 +976,18 @@ AI_Smart_SpeedDownHit:
 ; Player is faster than enemy.
 
 	ld a, [wEnemyMoveStruct + MOVE_ANIM]
-	cp ICY_WIND
+	push hl
+	call GetMoveIDFromIndex
+	ld a, h
+	if HIGH(ICY_WIND)
+		cp HIGH(ICY_WIND)
+	else
+		and a
+	endc
+	ld a, l
+	pop hl
+	ret nz
+	cp LOW(ICY_WIND)
 	ret nz
 	call AICheckEnemyQuarterHP
 	ret nc
@@ -1141,7 +1152,7 @@ AI_Smart_Encore:
 	push hl
 	ld a, [wPlayerSelectedMove]
 	ld hl, EncoreMoves
-	call IsInByteArray
+	call AI_CheckMoveInList
 	pop hl
 	jr nc, .discourage
 
@@ -1305,7 +1316,7 @@ AI_Smart_Disable:
 	push hl
 	ld a, [wPlayerSelectedMove]
 	ld hl, UsefulMoves
-	call IsInByteArray
+	call AI_CheckMoveInList
 
 	pop hl
 	jr nc, .notencourage
@@ -1712,7 +1723,18 @@ AI_Smart_Earthquake:
 
 ; Greatly encourage this move if the player is underground and the enemy is faster.
 	ld a, [wPlayerSelectedMove]
-	cp DIG
+	push hl
+	call GetMoveIndexFromID
+	ld a, h
+	if HIGH(DIG)
+		cp HIGH(DIG)
+	else
+		and a
+	endc
+	ld a, l
+	pop hl
+	ret nz
+	cp LOW(DIG)
 	ret nz
 
 	ld a, [wPlayerSubStatus3]
@@ -1952,7 +1974,18 @@ AI_Smart_JumpKick:
 AI_Smart_Gust:
 ; Greatly encourage this move if the player is flying and the enemy is faster.
 	ld a, [wPlayerSelectedMove]
-	cp FLY
+	push hl
+	call GetMoveIndexFromID
+	ld a, h
+	if HIGH(FLY)
+		cp HIGH(FLY)
+	else
+		and a
+	endc
+	ld a, l
+	pop hl
+	ret nz
+	cp LOW(FLY)
 	ret nz
 
 	ld a, [wPlayerSubStatus3]
@@ -2198,32 +2231,39 @@ AIHasMoveEffect:
 AIHasMoveInArray:
 ; Return carry if the enemy has a move in array hl.
 
-	push hl
 	push de
 	push bc
 
-.next
-	ld a, [hli]
-	cp -1
-	jr z, .done
-
-	ld b, a
-	ld c, NUM_MOVES + 1
+	push hl
+	ld b, NUM_MOVES
 	ld de, wAIMoves
 
-.check
-	dec c
-	jr z, .next
-
+.loop
 	ld a, [de]
 	inc de
-	cp b
-	jr nz, .check
-
-	scf
-
+	and a
+	jr z, .next
+	call GetMoveIndexFromID
+	ld a, h
+	ld c, l
+	pop hl
+	push hl
+	push bc
+	push de
+	ld b, a
+	ld de, 2
+	call IsInHalfwordArray
+	pop de
+	pop bc
+	jr c, .done
+.next
+	dec b
+	jr nz, .loop
 .done
-	jmp PopBCDEHL
+	pop hl
+	pop bc
+	pop de
+	ret
 
 INCLUDE "data/battle/ai/useful_moves.asm"
 
@@ -2260,7 +2300,7 @@ AI_Opportunist:
 	push de
 	push bc
 	ld hl, StallMoves
-	call IsInByteArray
+	call AI_CheckMoveInList
 
 	pop bc
 	pop de
@@ -2493,7 +2533,7 @@ AI_Cautious:
 	push de
 	push bc
 	ld hl, ResidualMoves
-	call IsInByteArray
+	call AI_CheckMoveInList
 
 	pop bc
 	pop de
@@ -2751,3 +2791,12 @@ AI_50_50:
 	call Random
 	cp 50 percent + 1
 	ret
+
+AI_CheckMoveInList:
+	push hl
+	call GetMoveIndexFromID
+	ld b, h
+	ld c, l
+	pop hl
+	ld de, 2
+	jp IsInHalfwordArray

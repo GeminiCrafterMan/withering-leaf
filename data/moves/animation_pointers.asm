@@ -1,7 +1,35 @@
-BattleAnimations::
+; negative entries first (see the constants file for details)
 ; entries correspond to constants/move_constants.asm
 	table_width 2
 	farbank "Battle Animations"
+	fardw BattleAnim_FuryAttack
+	fardw BattleAnim_MilkDrink
+	fardw BattleAnim_Withdraw
+	fardw BattleAnim_Harden
+	fardw BattleAnim_Slp
+	fardw BattleAnim_Brn
+	fardw BattleAnim_Psn
+	fardw BattleAnim_Sap
+	fardw BattleAnim_Frz
+	fardw BattleAnim_Par
+	fardw BattleAnim_InLove
+	fardw BattleAnim_InSandstorm
+	fardw BattleAnim_InHail
+	fardw BattleAnim_UnderCurse
+	fardw BattleAnim_Confused
+	fardw BattleAnim_StatUp
+	fardw BattleAnim_StatDown
+	fardw BattleAnim_Sharpen
+	fardw BattleAnim_ThrowPokeBall
+	fardw BattleAnim_SendOutMon
+	fardw BattleAnim_ReturnMon
+	fardw BattleAnim_Transform
+	fardw BattleAnim_Miss
+	fardw BattleAnim_EnemyDamage
+	fardw BattleAnim_PlayerDamage
+	fardw BattleAnim_HitConfusion
+	fardw BattleAnim_HeldItemTrigger
+BattleAnimations::
 	fardw BattleAnim_0
 	fardw BattleAnim_Acrobatics
 	fardw BattleAnim_KarateChop
@@ -263,34 +291,7 @@ endc
 	fardw BattleAnim_DisarmVoice
 	fardw BattleAnim_Struggle
 	;fardw BattleAnim_LeechSeed
-	assert_table_length NUM_ATTACKS + 1
-	assert_table_length $100
-; $100
-	fardw BattleAnim_FuryAttack
-	fardw BattleAnim_MilkDrink
-	fardw BattleAnim_Withdraw
-	fardw BattleAnim_Harden
-	fardw BattleAnim_Slp
-	fardw BattleAnim_Brn
-	fardw BattleAnim_Psn
-	fardw BattleAnim_Sap
-	fardw BattleAnim_Frz
-	fardw BattleAnim_Par
-	fardw BattleAnim_InLove
-	fardw BattleAnim_InSandstorm
-	fardw BattleAnim_InHail
-	fardw BattleAnim_UnderCurse
-	fardw BattleAnim_Confused
-	fardw BattleAnim_StatUp
-	fardw BattleAnim_StatDown
-	fardw BattleAnim_Sharpen
-	fardw BattleAnim_ThrowPokeBall
-	fardw BattleAnim_SendOutMon
-	fardw BattleAnim_ReturnMon
-	fardw BattleAnim_Transform
-	fardw BattleAnim_Miss
-	fardw BattleAnim_EnemyDamage
-	fardw BattleAnim_PlayerDamage
-	fardw BattleAnim_HitConfusion
-	fardw BattleAnim_HeldItemTrigger
-	assert_table_length NUM_BATTLE_ANIMS + 1
+; Uh... Shouldn't I do something about this?
+; Leaving a table hanging wide open like this
+; is how glitch animations happen...
+	;anim_ret

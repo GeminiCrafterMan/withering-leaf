@@ -259,7 +259,6 @@ MoveDescriptions::
 	;dw WorrySeedDescription
 	assert_table_length NUM_ATTACKS
 	dw Move00Description
-	assert_table_length $100
 
 Move00Description:
 	text "?"

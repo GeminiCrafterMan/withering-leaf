@@ -266,9 +266,14 @@ endc
 	const STRUGGLE      ; $ff
 	;const WORRY_SEED	; $100?
 DEF NUM_ATTACKS EQU const_value - 1
+
+	if NUM_ATTACKS > $3fff
+		fail "Too many moves defined!"
+	endc
+
 ; Battle animations use the same constants as the moves up to this point
 	; These animations don't play if battle anims are disabled.
-	const_next $100
+const_value = -$1a ; fix if more negative values are added
 	; Pseudo-moves (replaces default move anim for certain species)
 	const ANIM_FURY_ATTACK        ; $100
 	const ANIM_MILK_DRINK         ; $101
@@ -303,6 +308,10 @@ DEF NUM_ATTACKS EQU const_value - 1
 	const ANIM_HIT_CONFUSION      ; $119
 	const ANIM_HELD_ITEM_TRIGGER  ; $11a
 
+	if const_value
+		fail "Please adjust the initial constant value to ensure that the last animation constant has a value of -1"
+	endc
+
 DEF ANIM_AFFECTION EQU ANIM_IN_LOVE ; just an alias for now
 DEF NUM_BATTLE_ANIMS EQU const_value - 1
 DEF FIRST_UNCONDITIONAL_ANIM EQU ANIM_THROW_POKE_BALL
@@ -313,3 +322,9 @@ DEF FIRST_UNCONDITIONAL_ANIM EQU ANIM_THROW_POKE_BALL
 	const BATTLEANIM_ENEMY_DAMAGE
 	const BATTLEANIM_PLAYER_DAMAGE
 	const BATTLEANIM_HIT_CONFUSION
+
+MOVE_TABLE_ENTRIES                EQU 230
+MOVE_TABLE_LOCKED_ENTRIES         EQU  18
+MOVE_TABLE_CACHE_SIZE             EQU  16
+MOVE_TABLE_SAVED_RECENT_INDEXES   EQU  16
+MOVE_TABLE_MINIMUM_RESERVED_INDEX EQU $FF

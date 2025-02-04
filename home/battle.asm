@@ -412,12 +412,17 @@ GetCurMoveProperty::
 GetMoveProperty::
 	dec a
 GetMoveAttr::
-; Assuming hl = Moves + x, return attribute x of move a.
+; Return attribute a of move l in a; clobbers hl.
+; Replaces the old GetMoveAttr, but I think it does the same thing...
 	push bc
-	ld bc, MOVE_LENGTH
-	rst AddNTimes
-	ld a, BANK(Moves)
+	ld c, a
+	ld a, l
+	jr c, .done
+	call GetMoveAddress
+	ld b, 0
+	add hl, bc
 	call GetFarByte
+.done
 	pop bc
 	ret
 
