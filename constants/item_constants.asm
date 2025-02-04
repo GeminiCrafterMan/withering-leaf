@@ -671,6 +671,7 @@ DEF NUM_CANDIES EQU const_value - 1
 	const HARSH_LURE   ; 21
 	const POTENT_LURE  ; 22
 	const MALIGN_LURE  ; 23
+	const GRACIDEA     ; 24
 DEF CHARMS_START EQU const_value
 	; Only charms below this point!
 	const SHINY_CHARM  ; 24
@@ -692,6 +693,7 @@ DEF NUM_KEY_ITEMS EQU const_value - 1
 	const NAM_GBC_SOUNDS
 	const NAM_GO_GOGGLES
 	const NAM_GOOD_ROD
+	const NAM_GRACIDEA
 	const NAM_GS_BALL
 	const NAM_HARSH_LURE
 	const NAM_ITEMFINDER

@@ -317,6 +317,7 @@ KeyItemEffects:
 	dw IsntTheTimeMessage ; HARSH_LURE
 	dw IsntTheTimeMessage ; POTENT_LURE
 	dw IsntTheTimeMessage ; MALIGN_LURE
+	dw IsntTheTimeMessage ; GRACIDEA (change later!)
 	dw IsntTheTimeMessage ; SHINY_CHARM
 	dw IsntTheTimeMessage ; OVAL_CHARM
 	dw IsntTheTimeMessage ; CATCH_CHARM

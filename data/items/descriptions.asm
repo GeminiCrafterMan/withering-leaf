@@ -293,6 +293,7 @@ KeyItemDescriptions:
 	dw HarshLureDesc
 	dw PotentLureDesc
 	dw MalignLureDesc
+	dw GracideaDesc
 	dw ShinyCharmDesc
 	dw OvalCharmDesc
 	dw CatchCharmDesc
@@ -1718,4 +1719,9 @@ ExpCandyLDesc:
 ExpCandyXLDesc:
 	text "A candy that"
 	next "gives Exp. Points."
+	done
+
+GracideaDesc:
+	text "A flower loved by"
+	next "a certain #mon."
 	done
