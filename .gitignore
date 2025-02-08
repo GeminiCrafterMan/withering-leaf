@@ -1,63 +1,47 @@
-# compiled objects
-*.o
-*.h.gch
-
-# compiled graphics
-*.1bpp
-*.2bpp
-*.2bpp.vram*
-*.lz
-*.widths
-gfx/pokemon/*/*.dimensions
-gfx/pokemon/*/*.animated.tilemap
-gfx/pokemon/*/bitmask.asm
-gfx/pokemon/*/frames.asm
-gfx/pokedex/*.bin
-
-# compiled tilesets
-data/tilesets/*_collision.bin
-
-# compiled roms
-*.gbc
-*.pocket
-*.patch
-
-# compiled patch
-*.bsp
-
-# rgbds extras
-*.map
-*.sym
-
-# tool binaries
 *.exe
-
-# tool output
-bank_ends.txt
-
-# precompiled python
-*.pyc
-*$py.class
-
-# save game files
+*.o
+*.i
+*.elf
+*.gba
+!data/*.gba
 *.sgm
-*.sav
-*.rtc
-*.sn*
-*.sa*
+*.sa1
+*.ss[0-9]
 *.sg1
-
-# vim configuration
-# http://www.vim.org/scripts/script.php?script_id=441
-.lvimrc
-
-# swap files for vim and gedit
-.*.swp
-*~
-
-# macos files
-.DS_STORE
-
-# local tools
-rgbds/
-deploy.sh
+*.1bpp
+*.4bpp
+*.8bpp
+*.gbapal
+*.lz
+*.rl
+*.latfont
+*.hwjpnfont
+*.fwjpnfont
+sound/**/*.bin
+sound/songs/midi/*.s
+tools/agbcc
+*.map
+*.bat
+*.dump
+*.sa*
+Thumbs.db
+build/
+.DS_Store
+*.ddump
+.idea/
+porymap.*.cfg
+prefabs.json
+.vscode/
+*.a
+.fuse_hidden*
+*.sna
+*.diff
+*.sym
+*.js
+/pokeemerald-*.png
+src/data/map_group_count.h
+tools/trainerproc/trainerproc
+*.Identifier
+*.smol
+*.fastSmol
+*.smolTM

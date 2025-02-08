@@ -1,313 +1,458 @@
-NAME := polishedcrystal
-MODIFIERS :=
-VERSION := 3.2.0-beta
+# GBA rom header
+TITLE       := POKEMON EMER
+GAME_CODE   := BPEE
+MAKER_CODE  := 01
+REVISION    := 0
+KEEP_TEMPS  ?= 0
 
-ROM_NAME = $(NAME)$(MODIFIERS)-$(VERSION)
-EXTENSION := gbc
+# `File name`.gba
+FILE_NAME := pokeemerald
+BUILD_DIR := build
 
-TITLE := PKPCRYSTAL
-MCODE := PKPC
-ROMVERSION := 0x30
+# Compares the ROM to a checksum of the original - only makes sense using when non-modern
+COMPARE     ?= 0
+# Executes the Test Runner System that checks that all mechanics work as expected
+TEST         ?= 0
+# Enables -fanalyzer C flag to analyze in depth potential UBs
+ANALYZE      ?= 0
+# Count unused warnings as errors. Used by RH-Hideout's repo
+UNUSED_ERROR ?= 0
+# Adds -Og and -g flags, which optimize the build for debugging and include debug info respectively
+DEBUG        ?= 0
 
-FILLER := 0xff
+ifeq (compare,$(MAKECMDGOALS))
+  COMPARE := 1
+endif
+ifeq (check,$(MAKECMDGOALS))
+  TEST := 1
+endif
+ifeq (debug,$(MAKECMDGOALS))
+  DEBUG := 1
+endif
 
-ifneq ($(wildcard rgbds/.*),)
-RGBDS := rgbds/
+# Default make rule
+all: rom
+
+# Toolchain selection
+TOOLCHAIN := $(DEVKITARM)
+# don't use dkP's base_tools anymore
+# because the redefinition of $(CC) conflicts
+# with when we want to use $(CC) to preprocess files
+# thus, manually create the variables for the bin
+# files, or use arm-none-eabi binaries on the system
+# if dkP is not installed on this system
+ifneq (,$(TOOLCHAIN))
+  ifneq ($(wildcard $(TOOLCHAIN)/bin),)
+    export PATH := $(TOOLCHAIN)/bin:$(PATH)
+  endif
+endif
+
+PREFIX := arm-none-eabi-
+OBJCOPY := $(PREFIX)objcopy
+OBJDUMP := $(PREFIX)objdump
+AS := $(PREFIX)as
+LD := $(PREFIX)ld
+
+EXE :=
+ifeq ($(OS),Windows_NT)
+  EXE := .exe
+endif
+
+CPP := $(PREFIX)cpp
+
+ROM_NAME := $(FILE_NAME).gba
+OBJ_DIR_NAME := $(BUILD_DIR)/modern
+OBJ_DIR_NAME_TEST := $(BUILD_DIR)/modern-test
+OBJ_DIR_NAME_DEBUG := $(BUILD_DIR)/modern-debug
+
+ELF_NAME := $(ROM_NAME:.gba=.elf)
+MAP_NAME := $(ROM_NAME:.gba=.map)
+TESTELF = $(ROM_NAME:.gba=-test.elf)
+HEADLESSELF = $(ROM_NAME:.gba=-test-headless.elf)
+
+# Pick our active variables
+ROM := $(ROM_NAME)
+ifeq ($(TESTELF),$(MAKECMDGOALS))
+  TEST := 1
+endif
+ifeq ($(TEST), 0)
+  OBJ_DIR := $(OBJ_DIR_NAME)
 else
-RGBDS :=
+  OBJ_DIR := $(OBJ_DIR_NAME_TEST)
+endif
+ifeq ($(DEBUG),1)
+  OBJ_DIR := $(OBJ_DIR_NAME_DEBUG)
+endif
+ELF := $(ROM:.gba=.elf)
+MAP := $(ROM:.gba=.map)
+SYM := $(ROM:.gba=.sym)
+
+# Commonly used directories
+C_SUBDIR = src
+ASM_SUBDIR = asm
+DATA_SRC_SUBDIR = src/data
+DATA_ASM_SUBDIR = data
+SONG_SUBDIR = sound/songs
+MID_SUBDIR = sound/songs/midi
+TEST_SUBDIR = test
+
+C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
+ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
+DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
+SONG_BUILDDIR = $(OBJ_DIR)/$(SONG_SUBDIR)
+MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
+TEST_BUILDDIR = $(OBJ_DIR)/$(TEST_SUBDIR)
+
+SHELL := bash -o pipefail
+
+# Set flags for tools
+ASFLAGS := -mcpu=arm7tdmi --defsym MODERN=1
+
+INCLUDE_DIRS := include
+INCLUDE_CPP_ARGS := $(INCLUDE_DIRS:%=-iquote %)
+INCLUDE_SCANINC_ARGS := $(INCLUDE_DIRS:%=-I %)
+
+ifeq ($(DEBUG),1)
+O_LEVEL ?= g
+else
+O_LEVEL ?= 2
+endif
+CPPFLAGS := $(INCLUDE_CPP_ARGS) -Wno-trigraphs -DMODERN=1 -DTESTING=$(TEST)
+ARMCC := $(PREFIX)gcc
+PATH_ARMCC := PATH="$(PATH)" $(ARMCC)
+CC1 := $(shell $(PATH_ARMCC) --print-prog-name=cc1) -quiet
+override CFLAGS += -mthumb -mthumb-interwork -O$(O_LEVEL) -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -fno-toplevel-reorder -Wno-pointer-to-int-cast -std=gnu17 -Werror -Wall -Wno-strict-aliasing -Wno-attribute-alias -Woverride-init
+ifeq ($(ANALYZE),1)
+  override CFLAGS += -fanalyzer
+endif
+# Only throw an error for unused elements if its RH-Hideout's repo
+ifeq ($(UNUSED_ERROR),0)
+  ifneq ($(GITHUB_REPOSITORY_OWNER),rh-hideout)
+    override CFLAGS += -Wno-error=unused-variable -Wno-error=unused-const-variable -Wno-error=unused-parameter -Wno-error=unused-function -Wno-error=unused-but-set-parameter -Wno-error=unused-but-set-variable -Wno-error=unused-value -Wno-error=unused-local-typedefs
+  endif
+endif
+LIBPATH := -L "$(dir $(shell $(PATH_ARMCC) -mthumb -print-file-name=libgcc.a))" -L "$(dir $(shell $(PATH_ARMCC) -mthumb -print-file-name=libnosys.a))" -L "$(dir $(shell $(PATH_ARMCC) -mthumb -print-file-name=libc.a))"
+LIB := $(LIBPATH) -lc -lnosys -lgcc -L../../libagbsyscall -lagbsyscall
+# Enable debug info if set
+ifeq ($(DINFO),1)
+  override CFLAGS += -g
+else
+  ifeq ($(DEBUG),1)
+    override CFLAGS += -g
+  endif
 endif
 
-Q :=
-
-.SECONDEXPANSION:
-
-RGBASM_FLAGS     = -E -Q8 -P includes.asm -Weverything -Wtruncation=1
-RGBASM_VC_FLAGS  = $(RGBASM_FLAGS) -DVIRTUAL_CONSOLE
-RGBLINK_FLAGS    = -M -n $(ROM_NAME).sym    -m $(ROM_NAME).map    -p $(FILLER)
-RGBLINK_VC_FLAGS = -M -n $(ROM_NAME)_vc.sym -m $(ROM_NAME)_vc.map -p $(FILLER)
-RGBFIX_FLAGS     = -csjv -t $(TITLE) -i $(MCODE) -n $(ROMVERSION) -p $(FILLER) -k 01 -l 0x33 -m MBC3+TIMER+RAM+BATTERY -r 3
-
-ifeq ($(filter faithful,$(MAKECMDGOALS)),faithful)
-MODIFIERS := $(MODIFIERS)-faithful
-RGBASM_FLAGS += -DFAITHFUL
-endif
-ifeq ($(filter monochrome,$(MAKECMDGOALS)),monochrome)
-MODIFIERS := $(MODIFIERS)-monochrome
-RGBASM_FLAGS += -DMONOCHROME
-endif
-ifeq ($(filter noir,$(MAKECMDGOALS)),noir)
-MODIFIERS := $(MODIFIERS)-noir
-RGBASM_FLAGS += -DNOIR
-endif
-ifeq ($(filter hgss,$(MAKECMDGOALS)),hgss)
-MODIFIERS := $(MODIFIERS)-hgss
-RGBASM_FLAGS += -DHGSS
-endif
-ifeq ($(filter debug,$(MAKECMDGOALS)),debug)
-MODIFIERS := $(MODIFIERS)-debug
-RGBASM_FLAGS += -DDEBUG
-endif
-ifeq ($(filter pocket,$(MAKECMDGOALS)),pocket)
-MODIFIERS :=
-NAME := pkpc
-EXTENSION := pocket
-RGBASM_FLAGS += -DANALOGUE_POCKET -DNO_RTC
-RGBFIX_FLAGS = -csj -f hg -t $(TITLE) -i $(MCODE) -n $(ROMVERSION) -p $(FILLER) -k 01 -l 0x33 -m MBC5+RAM+BATTERY -r 3
-endif
-ifeq ($(filter huffman,$(MAKECMDGOALS)),huffman)
-Q := @
-RGBASM_FLAGS += -DHUFFMAN
+ifeq ($(NOOPT),1)
+override CFLAGS := $(filter-out -O1 -Og -O2,$(CFLAGS))
+override CFLAGS += -O0
 endif
 
-rom_obj := \
-	main.o \
-	home.o \
-	ram.o \
-	audio.o \
-	audio/music_player.o \
-	data/pokemon/dex_entries.o \
-	data/pokemon/egg_moves.o \
-	data/pokemon/evos_attacks.o \
-	data/maps/map_data.o \
-	data/text/common.o \
-	data/tilesets.o \
-	engine/movie/credits.o \
-	engine/overworld/events.o \
-	gfx/minis_icons.o \
-	gfx/pokemon.o \
-	gfx/sprites.o \
-	gfx/trainers.o \
-	gfx/items.o \
-	gfx/misc.o
+# Variable filled out in other make files
+AUTO_GEN_TARGETS :=
+include make_tools.mk
+# Tool executables
+GFX          := $(TOOLS_DIR)/gbagfx/gbagfx$(EXE)
+AIF          := $(TOOLS_DIR)/aif2pcm/aif2pcm$(EXE)
+MID          := $(TOOLS_DIR)/mid2agb/mid2agb$(EXE)
+SCANINC      := $(TOOLS_DIR)/scaninc/scaninc$(EXE)
+PREPROC      := $(TOOLS_DIR)/preproc/preproc$(EXE)
+RAMSCRGEN    := $(TOOLS_DIR)/ramscrgen/ramscrgen$(EXE)
+FIX          := $(TOOLS_DIR)/gbafix/gbafix$(EXE)
+MAPJSON      := $(TOOLS_DIR)/mapjson/mapjson$(EXE)
+JSONPROC     := $(TOOLS_DIR)/jsonproc/jsonproc$(EXE)
+TRAINERPROC  := $(TOOLS_DIR)/trainerproc/trainerproc$(EXE)
+PATCHELF     := $(TOOLS_DIR)/patchelf/patchelf$(EXE)
+ROMTEST      ?= $(shell { command -v mgba-rom-test || command -v $(TOOLS_DIR)/mgba/mgba-rom-test$(EXE); } 2>/dev/null)
+ROMTESTHYDRA := $(TOOLS_DIR)/mgba-rom-test-hydra/mgba-rom-test-hydra$(EXE)
 
-crystal_obj    := $(rom_obj:.o=.o)
-crystal_vc_obj :=$(rom_obj:.o=_vc.o)
+PERL := perl
+SHA1 := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 
+MAKEFLAGS += --no-print-directory
+
+# Clear the default suffixes
 .SUFFIXES:
-.PHONY: clean tidy crystal faithful pocket debug monochrome freespace tools bsp huffman vc
-.PRECIOUS: %.2bpp %.1bpp
+# Don't delete intermediate files
 .SECONDARY:
-.DEFAULT_GOAL: crystal
+# Delete files that weren't built properly
+.DELETE_ON_ERROR:
 
-crystal: $$(ROM_NAME).$$(EXTENSION)
-faithful: crystal
-monochrome: crystal
-noir: crystal
-hgss: crystal
-debug: crystal
-pocket: crystal
-vc: $$(ROM_NAME).patch
+RULES_NO_SCAN += libagbsyscall clean clean-assets tidy tidymodern tidycheck generated clean-generated
+.PHONY: all rom agbcc modern compare check debug
+.PHONY: $(RULES_NO_SCAN)
 
-tools:
-	$(MAKE) -C tools/
+infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
 
-clean: tidy
-	find gfx maps data/tilesets -name '*.lz' -delete
-	find gfx \( -name '*.[12]bpp' -o -name '*.2bpp.vram[012]' -o -name '*.2bpp.vram[012]p' \) -delete
-	find gfx/pokemon -mindepth 1 \( -name 'bitmask.asm' -o -name 'frames.asm' \
-		-o -name 'front.animated.tilemap' -o -name 'front.dimensions' \) -delete
-	find data/tilesets -name '*_collision.bin' -delete
-	$(MAKE) clean -C tools/
-
-tidy:
-	$(RM) $(crystal_obj) $(crystal_vc_obj) $(wildcard $(NAME)-*.gbc) $(wildcard $(NAME)-*.pocket) $(wildcard $(NAME)-*.bsp) \
-		$(wildcard $(NAME)-*.map) $(wildcard $(NAME)-*.sym) $(wildcard $(NAME)-*.patch) rgbdscheck.o
-
-freespace: crystal tools/bankends
-	tools/bankends $(ROM_NAME).map > bank_ends.txt
-
-bsp: $(ROM_NAME).bsp
-
-huffman: crystal
-
-
-rgbdscheck.o: rgbdscheck.asm
-	$Q$(RGBDS)rgbasm -o $@ $<
-
-ifeq (,$(filter clean tidy tools,$(MAKECMDGOALS)))
-$(info $(shell $(MAKE) -C tools))
+# Check if we need to scan dependencies based on the chosen rule OR user preference
+NODEP ?= 0
+# Check if we need to pre-build tools and generate assets based on the chosen rule.
+SETUP_PREREQS ?= 1
+# Disable dependency scanning for rules that don't need it.
+ifneq (,$(MAKECMDGOALS))
+  ifeq (,$(filter-out $(RULES_NO_SCAN),$(MAKECMDGOALS)))
+    NODEP := 1
+    SETUP_PREREQS := 0
+  endif
 endif
 
-preinclude_deps := includes.asm $(shell tools/scan_includes includes.asm)
+.SHELLSTATUS ?= 0
 
-define DEP
-$1: $2 $$(shell tools/scan_includes $2) $(preinclude_deps) | rgbdscheck.o
-	$Q$$(RGBDS)rgbasm $$(RGBASM_FLAGS) -o $$@ $$<
-endef
-
-define VCDEP
-$1: $2 $$(shell tools/scan_includes $2) $(preinclude_deps) | rgbdscheck.o
-	$Q$$(RGBDS)rgbasm $$(RGBASM_VC_FLAGS) -o $$@ $$<
-endef
-
-ifeq (,$(filter clean tidy tools,$(MAKECMDGOALS)))
-$(foreach obj, $(crystal_obj), $(eval $(call DEP,$(obj),$(obj:.o=.asm))))
-$(foreach obj, $(crystal_vc_obj), $(eval $(call VCDEP,$(obj),$(obj:_vc.o=.asm))))
+ifeq ($(SETUP_PREREQS),1)
+  # If set on: Default target or a rule requiring a scan
+  # Forcibly execute `make tools` since we need them for what we are doing.
+  $(foreach line, $(shell $(MAKE) -f make_tools.mk | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
+  ifneq ($(.SHELLSTATUS),0)
+    $(error Errors occurred while building tools. See error messages above for more details)
+  endif
+  # Oh and also generate mapjson sources before we use `SCANINC`.
+  $(foreach line, $(shell $(MAKE) generated | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
+  ifneq ($(.SHELLSTATUS),0)
+    $(error Errors occurred while generating map-related sources. See error messages above for more details)
+  endif
 endif
 
-$(ROM_NAME).patch: $(ROM_NAME)_vc.gbc $(ROM_NAME).$(EXTENSION) vc.patch.template
-	tools/make_patch $(ROM_NAME)_vc.sym $^ $@
+# Collect sources
+C_SRCS_IN := $(wildcard $(C_SUBDIR)/*.c $(C_SUBDIR)/*/*.c $(C_SUBDIR)/*/*/*.c)
+C_SRCS := $(foreach src,$(C_SRCS_IN),$(if $(findstring .inc.c,$(src)),,$(src)))
+C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
 
-.$(EXTENSION): tools/bankends
-$(ROM_NAME).$(EXTENSION): $(crystal_obj) layout.link
-	$Q$(RGBDS)rgblink $(RGBLINK_FLAGS) -l layout.link -o $@ $(filter %.o,$^)
-	$Q$(RGBDS)rgbfix $(RGBFIX_FLAGS) $@
-	$Qtools/bankends -q $(ROM_NAME).map >&2
+TEST_SRCS_IN := $(wildcard $(TEST_SUBDIR)/*.c $(TEST_SUBDIR)/*/*.c $(TEST_SUBDIR)/*/*/*.c)
+TEST_SRCS := $(foreach src,$(TEST_SRCS_IN),$(if $(findstring .inc.c,$(src)),,$(src)))
+TEST_OBJS := $(patsubst $(TEST_SUBDIR)/%.c,$(TEST_BUILDDIR)/%.o,$(TEST_SRCS))
+TEST_OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(TEST_OBJS))
 
-$(ROM_NAME)_vc.gbc: $(crystal_vc_obj) layout.link
-	$Q$(RGBDS)rgblink $(RGBLINK_VC_FLAGS) -l layout.link -o $@ $(filter %.o,$^)
-	$Q$(RGBDS)rgbfix $(RGBFIX_FLAGS) $@
-	$Qtools/bankends -q $(ROM_NAME)_vc.map >&2
+C_ASM_SRCS := $(wildcard $(C_SUBDIR)/*.s $(C_SUBDIR)/*/*.s $(C_SUBDIR)/*/*/*.s)
+C_ASM_OBJS := $(patsubst $(C_SUBDIR)/%.s,$(C_BUILDDIR)/%.o,$(C_ASM_SRCS))
 
-.bsp: tools/bspcomp
-%.bsp: $(wildcard bsp/*.txt)
-	$Qcd bsp; ../tools/bspcomp patch.txt ../$@; cd ..
+ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
+ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
 
+# get all the data/*.s files EXCEPT the ones with specific rules
+REGULAR_DATA_ASM_SRCS := $(filter-out $(DATA_ASM_SUBDIR)/maps.s $(DATA_ASM_SUBDIR)/map_events.s, $(wildcard $(DATA_ASM_SUBDIR)/*.s))
 
-gfx/battle/lyra_back.2bpp: rgbgfx += -Z
-gfx/battle/substitute-back.2bpp: rgbgfx += -Z
-gfx/battle/substitute-front.2bpp: rgbgfx += -Z
-gfx/battle/ghost.2bpp: rgbgfx += -Z
+DATA_ASM_SRCS := $(wildcard $(DATA_ASM_SUBDIR)/*.s)
+DATA_ASM_OBJS := $(patsubst $(DATA_ASM_SUBDIR)/%.s,$(DATA_ASM_BUILDDIR)/%.o,$(DATA_ASM_SRCS))
 
-gfx/battle_anims/angels.2bpp: tools/gfx += --trim-whitespace
-gfx/battle_anims/beam.2bpp: tools/gfx += --remove-xflip --remove-yflip --remove-whitespace
-gfx/battle_anims/bubble.2bpp: tools/gfx += --trim-whitespace
-gfx/battle_anims/charge.2bpp: tools/gfx += --trim-whitespace
-gfx/battle_anims/egg.2bpp: tools/gfx += --remove-whitespace
-gfx/battle_anims/explosion.2bpp: tools/gfx += --remove-whitespace
-gfx/battle_anims/hit.2bpp: tools/gfx += --remove-whitespace
-gfx/battle_anims/horn.2bpp: tools/gfx += --remove-whitespace
-gfx/battle_anims/lightning.2bpp: tools/gfx += --remove-whitespace
-gfx/battle_anims/misc.2bpp: tools/gfx += --remove-duplicates --remove-xflip
-gfx/battle_anims/noise.2bpp: tools/gfx += --remove-whitespace
-gfx/battle_anims/objects.2bpp: tools/gfx += --remove-whitespace --remove-xflip
-gfx/battle_anims/reflect.2bpp: tools/gfx += --remove-whitespace
-gfx/battle_anims/rocks.2bpp: tools/gfx += --remove-whitespace
-gfx/battle_anims/skyattack.2bpp: tools/gfx += --remove-whitespace
-gfx/battle_anims/status.2bpp: tools/gfx += --remove-whitespace
+SONG_SRCS := $(wildcard $(SONG_SUBDIR)/*.s)
+SONG_OBJS := $(patsubst $(SONG_SUBDIR)/%.s,$(SONG_BUILDDIR)/%.o,$(SONG_SRCS))
 
-gfx/card_flip/card_flip_1.2bpp: tools/gfx += --trim-whitespace
-gfx/card_flip/card_flip_2.2bpp: tools/gfx += --remove-whitespace
+MID_SRCS := $(wildcard $(MID_SUBDIR)/*.mid)
+MID_OBJS := $(patsubst $(MID_SUBDIR)/%.mid,$(MID_BUILDDIR)/%.o,$(MID_SRCS))
 
-gfx/font/%.1bpp: tools/gfx += --trim-whitespace
-gfx/font/space.2bpp: tools/gfx =
+OBJS     := $(C_OBJS) $(C_ASM_OBJS) $(ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(MID_OBJS)
+OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
-gfx/mail/dragonite.1bpp: tools/gfx += --remove-whitespace
-gfx/mail/flower_mail_border.1bpp: tools/gfx += --remove-whitespace
-gfx/mail/large_note.1bpp: tools/gfx += --remove-whitespace
-gfx/mail/litebluemail_border.1bpp: tools/gfx += --remove-whitespace
-gfx/mail/surf_mail_border.1bpp: tools/gfx += --remove-whitespace
+SUBDIRS  := $(sort $(dir $(OBJS) $(dir $(TEST_OBJS))))
+$(shell mkdir -p $(SUBDIRS))
 
-gfx/music_player/bg.2bpp: tools/gfx += --trim-whitespace
-gfx/music_player/music_player.2bpp: gfx/music_player/bg.2bpp gfx/music_player/ob.2bpp ; $Qcat $^ > $@
+# Pretend rules that are actually flags defer to `make all`
+modern: all
+compare: all
+debug: all
+# Uncomment the next line, and then comment the 4 lines after it to reenable agbcc.
+#agbcc: all
+agbcc:
+	@echo "'make agbcc' is deprecated as of pokeemerald-expansion 1.9 and will be removed in 1.10."
+	@echo "Search for 'agbcc: all' in Makefile to reenable agbcc."
+	@exit 1
 
-gfx/new_game/shrink1.2bpp: rgbgfx += -Z
-gfx/new_game/shrink2.2bpp: rgbgfx += -Z
+LD_SCRIPT_TEST := ld_script_test.ld
 
-gfx/overworld/overworld.2bpp: gfx/overworld/puddle_splash.2bpp gfx/overworld/cut_grass.2bpp gfx/overworld/cut_tree.2bpp gfx/overworld/heal_machine.2bpp gfx/overworld/fishing_rod.2bpp gfx/overworld/shadow.2bpp gfx/overworld/shaking_grass.2bpp gfx/overworld/boulder_dust.2bpp ; $Qcat $^ > $@
+$(OBJ_DIR)/ld_script_test.ld: $(LD_SCRIPT_TEST) $(LD_SCRIPT_DEPS)
+	cd $(OBJ_DIR) && sed "s#tools/#../../tools/#g" ../../$(LD_SCRIPT_TEST) > ld_script_test.ld
 
-gfx/pack/pack_left.2bpp: tools/gfx += --trim-whitespace
-gfx/pack/pack_top_left.2bpp: gfx/pack/pack_top.2bpp gfx/pack/pack_left.2bpp ; $Qcat $^ > $@
+$(TESTELF): $(OBJ_DIR)/ld_script_test.ld $(OBJS) $(TEST_OBJS) libagbsyscall tools check-tools
+	@echo "cd $(OBJ_DIR) && $(LD) -T ld_script_test.ld -o ../../$@ <objects> <test-objects> <lib>"
+	@cd $(OBJ_DIR) && $(LD) $(TESTLDFLAGS) -T ld_script_test.ld -o ../../$@ $(OBJS_REL) $(TEST_OBJS_REL) $(LIB)
+	$(FIX) $@ -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION) -d0 --silent
+	$(PATCHELF) $(TESTELF) gTestRunnerArgv "$(TESTS)\0"
 
-gfx/paintings/%.2bpp: rgbgfx += -Z
+ifeq ($(GITHUB_REPOSITORY_OWNER),rh-hideout)
+TEST_SKIP_IS_FAIL := \x01
+else
+TEST_SKIP_IS_FAIL := \x00
+endif
 
-gfx/player/chris_back.2bpp: rgbgfx += -Z
-gfx/player/kris_back.2bpp: rgbgfx += -Z
-gfx/player/crys_back.2bpp: rgbgfx += -Z
+check: $(TESTELF)
+	@cp $< $(HEADLESSELF)
+	$(PATCHELF) $(HEADLESSELF) gTestRunnerHeadless '\x01' gTestRunnerSkipIsFail "$(TEST_SKIP_IS_FAIL)"
+	$(ROMTESTHYDRA) $(ROMTEST) $(OBJCOPY) $(HEADLESSELF)
 
-gfx/pokedex/%.bin: gfx/pokedex/%.tilemap gfx/pokedex/%.attrmap ; $Qcat $^ > $@
-gfx/pokedex/pokedex.2bpp: gfx/pokedex/pokedex0.2bpp gfx/pokedex/pokedex1.2bpp gfx/pokedex/area.2bpp ; $Qcat $^ > $@
-gfx/pokedex/question_mark.2bpp: rgbgfx += -Z
+# Other rules
+rom: $(ROM)
+ifeq ($(COMPARE),1)
+	@$(SHA1) rom.sha1
+endif
 
-gfx/pokegear/pokegear.2bpp: tools/gfx += --trim-whitespace
-gfx/pokegear/pokegear_sprites.2bpp: tools/gfx += --trim-whitespace
+syms: $(SYM)
 
-gfx/pokemon/%/back.2bpp: rgbgfx += -Z
+clean: tidy clean-tools clean-check-tools clean-generated clean-assets
+	@$(MAKE) clean -C libagbsyscall
 
-gfx/pc/obj.2bpp: gfx/pc/modes.2bpp gfx/pc/bags.2bpp ; $Qcat $^ > $@
+clean-assets:
+	rm -f $(MID_SUBDIR)/*.s
+	rm -f $(DATA_ASM_SUBDIR)/layouts/layouts.inc $(DATA_ASM_SUBDIR)/layouts/layouts_table.inc
+	rm -f $(DATA_ASM_SUBDIR)/maps/connections.inc $(DATA_ASM_SUBDIR)/maps/events.inc $(DATA_ASM_SUBDIR)/maps/groups.inc $(DATA_ASM_SUBDIR)/maps/headers.inc $(DATA_SRC_SUBDIR)/map_group_count.h
+	find sound -iname '*.bin' -exec rm {} +
+	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec rm {} +
+	find $(DATA_ASM_SUBDIR)/maps \( -iname 'connections.inc' -o -iname 'events.inc' -o -iname 'header.inc' \) -exec rm {} +
 
-gfx/slots/slots_1.2bpp: tools/gfx += --trim-whitespace
-gfx/slots/slots_2.2bpp: tools/gfx += --interleave --png=$<
-gfx/slots/slots_3.2bpp: tools/gfx += --interleave --png=$< --remove-duplicates --keep-whitespace --remove-xflip
+tidy: tidymodern tidycheck tidydebug
 
-gfx/stats/judge.2bpp: tools/gfx += --trim-whitespace
-gfx/stats/stats_balls.2bpp: gfx/stats/stats.2bpp gfx/stats/balls.2bpp ; $Qcat $^ > $@
+tidymodern:
+	rm -f $(ROM_NAME) $(ELF_NAME) $(MAP_NAME)
+	rm -rf $(OBJ_DIR_NAME)
 
-gfx/title/crystal.2bpp: tools/gfx += --interleave --png=$<
-gfx/title/logo_version.2bpp: gfx/title/logo.2bpp gfx/title/version.2bpp ; $Qcat $^ > $@
+tidycheck:
+	rm -f $(TESTELF) $(HEADLESSELF)
+	rm -rf $(OBJ_DIR_NAME_TEST)
 
-gfx/town_map/town_map.2bpp: tools/gfx += --trim-whitespace
+tidydebug:
+	rm -rf $(DEBUG_OBJ_DIR_NAME)
 
-gfx/trade/ball.2bpp: tools/gfx += --remove-whitespace
-gfx/trade/game_boy.2bpp: tools/gfx += --remove-duplicates
-gfx/trade/link_cable.2bpp: tools/gfx += --remove-duplicates
-gfx/trade/ball_poof_cable.2bpp: gfx/trade/ball.2bpp gfx/trade/poof.2bpp gfx/trade/cable.2bpp ; $Qcat $^ > $@
-gfx/trade/game_boy_cable.2bpp: gfx/trade/game_boy.2bpp gfx/trade/link_cable.2bpp ; $Qcat $^ > $@
-gfx/trade/trade_screen.2bpp: gfx/trade/border.2bpp gfx/trade/textbox.2bpp ; $Qcat $^ > $@
+# Other rules
+include graphics_file_rules.mk
+include map_data_rules.mk
+include spritesheet_rules.mk
+include json_data_rules.mk
+include audio_rules.mk
 
-gfx/trainer_card/chris_card.2bpp: rgbgfx += -Z
-gfx/trainer_card/kris_card.2bpp: rgbgfx += -Z
-gfx/trainer_card/crys_card.2bpp: rgbgfx += -Z
-
-gfx/trainers/%.2bpp: rgbgfx += -Z
-
-gfx/type_chart/bg.2bpp: tools/gfx += --remove-duplicates --remove-xflip --remove-yflip
-gfx/type_chart/bg0.2bpp: gfx/type_chart/bg.2bpp.vram1p gfx/type_chart/bg.2bpp.vram0p ; $Qcat $^ > $@
-gfx/type_chart/ob.2bpp: tools/gfx += --interleave --png=$<
-
-
-gfx/pokemon/%/front.animated.2bpp: gfx/pokemon/%/front.2bpp gfx/pokemon/%/front.dimensions
-	$Qtools/pokemon_animation_graphics -o $@ $^
-gfx/pokemon/%/front.animated.tilemap: gfx/pokemon/%/front.2bpp gfx/pokemon/%/front.dimensions
-	$Qtools/pokemon_animation_graphics -t $@ $^
-gfx/pokemon/%/bitmask.asm: gfx/pokemon/%/front.animated.tilemap gfx/pokemon/%/front.dimensions
-	$Qtools/pokemon_animation -b $^ > $@
-gfx/pokemon/%/frames.asm: gfx/pokemon/%/front.animated.tilemap gfx/pokemon/%/front.dimensions
-	$Qtools/pokemon_animation -f $^ > $@
+# NOTE: Tools must have been built prior (FIXME)
+# so you can't really call this rule directly
+generated: $(AUTO_GEN_TARGETS)
+	@: # Silence the "Nothing to be done for `generated'" message, which some people were confusing for an error.
 
 
-%.lz: %
-	$Qtools/lzcomp -- $< $@
+%.s:   ;
+%.png: ;
+%.pal: ;
+%.aif: ;
 
-#%.4bpp: %.png
-#	$Qsuperfamiconv tiles -R -i $@ -d $<
+%.1bpp:   %.png  ; $(GFX) $< $@
+%.4bpp:   %.png  ; $(GFX) $< $@
+%.8bpp:   %.png  ; $(GFX) $< $@
+%.gbapal: %.pal  ; $(GFX) $< $@
+%.gbapal: %.png  ; $(GFX) $< $@
+%.lz:     %      ; $(GFX) $< $@
+%.rl:     %      ; $(GFX) $< $@
 
-%.2bpp: %.png
-	$Q$(RGBDS)rgbgfx $(rgbgfx) -o $@ $<
-	$(if $(tools/gfx),\
-		$Qtools/gfx $(tools/gfx) -o $@ $@)
+clean-generated:
+	-rm -f $(AUTO_GEN_TARGETS)
 
-%.1bpp: %.png
-	$(RGBDS)rgbgfx $(rgbgfx) -d1 -o $@ $<
-	$(if $(tools/gfx),\
-		$Qtools/gfx $(tools/gfx) -d1 -o $@ $@)
+COMPETITIVE_PARTY_SYNTAX := $(shell PATH="$(PATH)"; echo 'COMPETITIVE_PARTY_SYNTAX' | $(CPP) $(CPPFLAGS) -imacros include/gba/defines.h -imacros include/config/general.h | tail -n1)
+ifeq ($(COMPETITIVE_PARTY_SYNTAX),1)
+%.h: %.party ; $(CPP) $(CPPFLAGS) -traditional-cpp - < $< | $(TRAINERPROC) -o $@ -i $< -
+endif
 
-%.2bpp.vram0: %.2bpp
-	$Qtools/sub_2bpp.sh $< 128 > $@
+$(C_BUILDDIR)/librfu_intr.o: CFLAGS := -mthumb-interwork -O2 -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -fno-toplevel-reorder -Wno-pointer-to-int-cast
+$(C_BUILDDIR)/berry_crush.o: override CFLAGS += -Wno-address-of-packed-member
+$(C_BUILDDIR)/pokedex_plus_hgss.o: CFLAGS := -mthumb -mthumb-interwork -O2 -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -Wno-pointer-to-int-cast -std=gnu17 -Werror -Wall -Wno-strict-aliasing -Wno-attribute-alias -Woverride-init
+# Annoyingly we can't turn this on just for src/data/trainers.h
+$(C_BUILDDIR)/data.o: CFLAGS += -fno-show-column -fno-diagnostics-show-caret
 
-%.2bpp.vram1: %.2bpp
-	$Qtools/sub_2bpp.sh $< 128 128 > $@
+$(TEST_BUILDDIR)/%.o: CFLAGS := -mthumb -mthumb-interwork -O2 -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -Wno-pointer-to-int-cast -Werror -Wall -Wno-strict-aliasing -Wno-attribute-alias -Woverride-init
 
-%.2bpp.vram2: %.2bpp
-	$Qtools/sub_2bpp.sh $< 256 128 > $@
+# Dependency rules (for the *.c & *.s sources to .o files)
+# Have to be explicit or else missing files won't be reported.
 
-%.2bpp.vram0p: %.2bpp
-	$Qtools/sub_2bpp.sh $< 127 > $@
+# As a side effect, they're evaluated immediately instead of when the rule is invoked.
+# It doesn't look like $(shell) can be deferred so there might not be a better way (Icedude_907: there is soon).
 
-%.2bpp.vram1p: %.2bpp
-	$Qtools/sub_2bpp.sh $< 127 128 > $@
+$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.c
+ifneq ($(KEEP_TEMPS),1)
+	@echo "$(CC1) <flags> -o $@ $<"
+	@$(CPP) $(CPPFLAGS) $< | $(PREPROC) -i $< charmap.txt | $(CC1) $(CFLAGS) -o - - | cat - <(echo -e ".text\n\t.align\t2, 0") | $(AS) $(ASFLAGS) -o $@ -
+else
+	@$(CPP) $(CPPFLAGS) $< -o $*.i
+	@$(PREPROC) $*.i charmap.txt | $(CC1) $(CFLAGS) -o $*.s
+	@echo -e ".text\n\t.align\t2, 0\n" >> $*.s
+	$(AS) $(ASFLAGS) -o $@ $*.s
+endif
 
-%.2bpp.vram2p: %.2bpp
-	$Qtools/sub_2bpp.sh $< 255 128 > $@
+$(C_BUILDDIR)/%.d: $(C_SUBDIR)/%.c
+	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I tools/agbcc/include $<
 
-%.vwf.1bpp: %.2bpp
-	$Qtools/vwf -o $@ $<
+ifneq ($(NODEP),1)
+-include $(addprefix $(OBJ_DIR)/,$(C_SRCS:.c=.d))
+endif
 
-%.vwf.widths: %.2bpp
-	$Qtools/vwf -w $@ $<
+$(TEST_BUILDDIR)/%.o: $(TEST_SUBDIR)/%.c
+	@echo "$(CC1) <flags> -o $@ $<"
+	@$(CPP) $(CPPFLAGS) $< | $(PREPROC) -i $< charmap.txt | $(CC1) $(CFLAGS) -o - - | cat - <(echo -e ".text\n\t.align\t2, 0") | $(AS) $(ASFLAGS) -o $@ -
 
-%.dimensions: %.png
-	$Qtools/png_dimensions $< $@
+$(TEST_BUILDDIR)/%.d: $(TEST_SUBDIR)/%.c
+	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I tools/agbcc/include $<
 
-data/tilesets/%_collision.bin: data/tilesets/%_collision.asm
-	$QRGBDS=$(RGBDS) tools/collision_asm2bin.sh $< $@
+ifneq ($(NODEP),1)
+-include $(addprefix $(OBJ_DIR)/,$(TEST_SRCS:.c=.d))
+endif
+
+$(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s
+	$(AS) $(ASFLAGS) -o $@ $<
+
+$(ASM_BUILDDIR)/%.d: $(ASM_SUBDIR)/%.s
+	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I "" $<
+
+ifneq ($(NODEP),1)
+-include $(addprefix $(OBJ_DIR)/,$(ASM_SRCS:.s=.d))
+endif
+
+$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s
+	$(PREPROC) $< charmap.txt | $(CPP) $(INCLUDE_SCANINC_ARGS) - | $(PREPROC) -ie $< charmap.txt | $(AS) $(ASFLAGS) -o $@
+
+$(C_BUILDDIR)/%.d: $(C_SUBDIR)/%.s
+	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I "" $<
+
+ifneq ($(NODEP),1)
+-include $(addprefix $(OBJ_DIR)/,$(C_ASM_SRCS:.s=.d))
+endif
+
+$(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s
+	$(PREPROC) $< charmap.txt | $(CPP) $(INCLUDE_SCANINC_ARGS) - | $(PREPROC) -ie $< charmap.txt | $(AS) $(ASFLAGS) -o $@
+
+$(DATA_ASM_BUILDDIR)/%.d: $(DATA_ASM_SUBDIR)/%.s
+	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I "" $<
+
+ifneq ($(NODEP),1)
+-include $(addprefix $(OBJ_DIR)/,$(REGULAR_DATA_ASM_SRCS:.s=.d))
+endif
+
+$(OBJ_DIR)/sym_bss.ld: sym_bss.txt
+	$(RAMSCRGEN) .bss $< ENGLISH > $@
+
+$(OBJ_DIR)/sym_common.ld: sym_common.txt $(C_OBJS) $(wildcard common_syms/*.txt)
+	$(RAMSCRGEN) COMMON $< ENGLISH -c $(C_BUILDDIR),common_syms > $@
+
+$(OBJ_DIR)/sym_ewram.ld: sym_ewram.txt
+	$(RAMSCRGEN) ewram_data $< ENGLISH > $@
+
+MOVES_JSON_DIR := $(TOOLS_DIR)/learnset_helpers/porymoves_files
+TEACHABLE_DEPS := $(shell find data/ -type f -name '*.inc') $(INCLUDE_DIRS)/constants/tms_hms.h $(C_SUBDIR)/pokemon.c $(wildcard $(MOVES_JSON_DIR)/*.json)
+
+$(DATA_SRC_SUBDIR)/pokemon/teachable_learnsets.h: $(TEACHABLE_DEPS)
+	python3 $(TOOLS_DIR)/learnset_helpers/teachable.py
+
+# Linker script
+LD_SCRIPT := ld_script_modern.ld
+LD_SCRIPT_DEPS :=
+
+# Final rules
+
+libagbsyscall:
+	@$(MAKE) -C libagbsyscall TOOLCHAIN=$(TOOLCHAIN) MODERN=1
+
+# Elf from object files
+LDFLAGS = -Map ../../$(MAP)
+$(ELF): $(LD_SCRIPT) $(LD_SCRIPT_DEPS) $(OBJS) libagbsyscall
+	@cd $(OBJ_DIR) && $(LD) $(LDFLAGS) -T ../../$< --print-memory-usage -o ../../$@ $(OBJS_REL) $(LIB) | cat
+	@echo "cd $(OBJ_DIR) && $(LD) $(LDFLAGS) -T ../../$< --print-memory-usage -o ../../$@ <objs> <libs> | cat"
+	$(FIX) $@ -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION) --silent
+
+# Builds the rom from the elf file
+$(ROM): $(ELF)
+	$(OBJCOPY) -O binary $< $@
+	$(FIX) $@ -p --silent
+
+# Symbol file (`make syms`)
+$(SYM): $(ELF)
+	$(OBJDUMP) -t $< | sort -u | grep -E "^0[2389]" | $(PERL) -p -e 's/^(\w{8}) (\w).{6} \S+\t(\w{8}) (\S+)$$/\1 \2 \3 \4/g' > $@

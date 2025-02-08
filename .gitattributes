@@ -1,26 +1,26 @@
-# Auto detect text files and perform LF normalization
-* text eol=lf
+*.pal text eol=crlf
+*.sh text eol=lf
+*.s text eol=lf
+*.txt text eol=lf
+Makefile text eol=lf
+*.mk text eol=lf
+*.c text eol=lf
+*.h text eol=lf
+*.pl text eol=lf
+*.inc text eol=lf
+*.sha1 text eol=lf
+*.json text eol=lf
+*.sed text eol=lf
+*.cpp text eol=lf
+.gitattributes text eol=lf
+.gitignore text eol=lf
+*.hpp text eol=lf
+*.md text eol=lf
+*.ps1 text eol=crlf
+*.yml text eol=lf
 
-# Explicitly declare text files you want to always be normalized and converted
-# to native line endings on checkout.
-*.asm text
-*.pal text
-*.py  text
-*.txt text
-*.sh  text
-*.link text
-Makefile text
+*.png binary
+*.bin binary
 
-# Declare files that will always have CRLF line endings on checkout.
-*.patch.template text eol=crlf linguist-language=INI
-
-# hexdump binary files
-*.png  binary diff=hex
-*.lz   binary diff=hex
-*.2bpp binary diff=hex
-*.1bpp binary diff=hex
-*.bin  binary diff=hex
-*.blk  binary diff=hex
-*.ablk binary diff=hex
-*.tilemap binary diff=hex
-*.ips  binary diff=hex
+*.h linguist-language=C
+*.inc linguist-language=Assembly
