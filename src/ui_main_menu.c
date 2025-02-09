@@ -597,6 +597,7 @@ static void MainMenu_InitializeGPUWindows(void) // This function creates the win
 
 static void MoveHWindowsWithInput(void) // Update GPU windows after selection is changed
 {
+    PlaySE(SE_SELECT);
     SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(HWinCoords[sSelectedOption].winh.left, HWinCoords[sSelectedOption].winh.right));
     SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(HWinCoords[sSelectedOption].winv.left, HWinCoords[sSelectedOption].winv.right));
 }
