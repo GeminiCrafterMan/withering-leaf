@@ -20,6 +20,7 @@
 
 ## Tutorials Used
 * "New Main Menu UI With Mugshot" by Archie and Mudskip
+* "Full Screen Start Menu" by Archie and Mudskip
 * "Enable the Reset RTC Feature" by LOuroboros
 
 ## Special Thanks
