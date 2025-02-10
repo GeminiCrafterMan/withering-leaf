@@ -1,6 +1,7 @@
 # Credits
-
-
+* Project Lead - Gemini0
+* Story and Planning - MearaTheDigger
+* Number-crunching - LilithLily5
 
 ## Code
 
